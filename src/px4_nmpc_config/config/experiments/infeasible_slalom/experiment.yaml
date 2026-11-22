@@ -1,0 +1,15 @@
+# Geometry metadata consumed by the existing comparison scripts. The fixed
+# scenario JSON carries the actual obstacle coordinates.
+experiment:
+  seed: 9100
+  arena_north_m: 34.0
+  arena_east_m: 10.0
+  arena_height_m: 6.0
+  wall_margin_m: 0.45
+  takeoff_altitude_m: 2.5
+  obstacle_count: 10
+  obstacle_radius_mean_m: 0.35
+  obstacle_radius_std_m: 0.0
+  obstacle_radius_min_m: 0.35
+  obstacle_radius_max_m: 0.35
+  obstacle_min_gap_m: 0.30

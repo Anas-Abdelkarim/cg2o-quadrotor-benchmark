@@ -1,0 +1,61 @@
+# Paired ISPD (cg2o) vs IPOPT study on the infeasible 3-D slalom
+#   python3 -m px4_nmpc_compare.slalom_study --jobs 1
+#   python3 -m px4_nmpc_compare.slalom_study --jobs 1 --tuned results/tuning/<stamp>_ispd_cold results/tuning/<stamp>_ispd_warm_final ...
+#
+# One DRIVER flies the slalom once and every OCP it solves is recorded. ISPD and IPOPT then solve exactly these
+# OCPs (same x0, references, obstacles, shift), each in its own process pinned to one core:
+#   cold: every OCP from the reference-tracking rollout, which penetrates the obstacle safety regions (infeasible start)
+#   warm: every OCP from the solver's OWN previous solution, shifted by the recorded number of stages
+# Both solvers solve the same OCP (trajectory formulation, exact derivatives); all solutions are scored by one common
+# function. IPOPT is the native C++ TNLP with its default options (MUMPS); ISPD is cg2o's infeasible-start
+# primal-dual interior-point method (qdldlt linear solver).
+study:
+  name: infeasible_slalom_ispd_vs_ipopt
+  driver: ipopt_warm_primal        # flies the recorded request trace (neutral choice: the baseline solver)
+  reference: ipopt_reference       # cold, tight tolerance: reference cost of every OCP
+  budget: 250                      # the SAME iteration budget for both solvers
+  cold_repeats: 3                  # cold replays: solves per OCP, median time
+  first_ocp_repeats: 20            # the deliberately infeasible first slalom OCP: solves for timing
+  jobs: 1                          # one timed process at a time (laptop CPUs lower the clock when many cores work)
+  t_max_s: 45.0
+  cold: [ipopt, ispd]
+  warm: [ipopt_warm_primal, ipopt_warm_primal_dual, ispd_warm_primal, ispd_warm_final, ispd_warm_middle]
+  flights: [ipopt_warm_primal, ipopt_warm_primal_dual, ispd_warm_primal, ispd_warm_final, ispd_warm_middle]
+  video: ispd_warm_final
+
+variants:
+  # ------------------------------------------------------------------ IPOPT (native C++ TNLP, default options)
+  ipopt:
+    label: IPOPT
+    backend: ipopt_cpp
+    ipopt_cpp: {linear_solver: mumps}
+  ipopt_warm_primal:
+    label: IPOPT, warm (primal)
+    backend: ipopt_cpp
+    ipopt_cpp: {linear_solver: mumps, warm_start: primal}
+  ipopt_warm_primal_dual:
+    label: IPOPT, warm (primal-dual)
+    backend: ipopt_cpp
+    ipopt_cpp: {linear_solver: mumps, warm_start: primal_dual}
+  ipopt_reference:
+    label: IPOPT, tight tolerance (reference)
+    backend: ipopt_cpp
+    params: {solver_tol: 1.0e-8}
+    ipopt_cpp: {linear_solver: mumps, acceptable_tol: 1.0e-8, acceptable_iter: 15}
+  # ------------------------------------------------------------------ ISPD (cg2o)
+  ispd:
+    label: ISPD
+    backend: cg2o
+    cg2o: {optimizer: ispd, linear_solver: {type: qdldlt}, warm_start: {strategy: 0}}
+  ispd_warm_primal:
+    label: ISPD, warm (primal shift)
+    backend: cg2o
+    cg2o: {optimizer: ispd, linear_solver: {type: qdldlt}, warm_start: {strategy: 0}}
+  ispd_warm_final:
+    label: ISPD, warm (final iterate)
+    backend: cg2o
+    cg2o: {optimizer: ispd, linear_solver: {type: qdldlt}, warm_start: {strategy: 1}}
+  ispd_warm_middle:
+    label: ISPD, warm (middle iterate)
+    backend: cg2o
+    cg2o: {optimizer: ispd, linear_solver: {type: qdldlt}, warm_start: {strategy: 2}}

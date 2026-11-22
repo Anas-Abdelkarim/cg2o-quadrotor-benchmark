@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "solver-tuning"
+version = "2.1.0"
+description = "Reproducible constrained parameter tuning for simulations and external solvers"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6,<7"]
+
+[project.optional-dependencies]
+bo = ["optuna>=4.2,<5"]
+plots = ["matplotlib>=3.6", "numpy>=1.23"]
+dev = ["pytest>=8,<10", "build>=1,<2", "ruff>=0.9,<1"]
+
+[project.scripts]
+solver-tune = "tuning.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

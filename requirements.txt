@@ -1,0 +1,14 @@
+-r requirements-offline.txt
+# Full Python profile: native builds, ROS 2 Humble, tests, and GUI recording. Exact versions used for the paper.
+packaging==24.2     # setuptools 79 (ROS 2 package builds) needs packaging >= 22; Ubuntu 22.04 ships 21.3
+pybind11==3.1.0
+scipy==1.15.3        # sensitivity table, ground-truth alignment
+pyulog==1.2.4        # PX4 flight logs (ground-truth evaluation)
+optuna==4.9.0        # Bayesian tuning (TPE), through tools/solver_tuning[bo]
+-e ./tools/solver_tuning[bo]
+
+# ROS 2 Humble rosidl is compatible with Empy 3.x, not Empy 4.x.
+empy==3.3.4
+patchelf==0.19.1.0  # scripts/build_backends/isolate_ipopt.py (private IPOPT sonames for ipopt_cpp)
+pytest==8.4.2       # pytest.ini uses pythonpath/addopts
+python-xlib==0.33   # px4_nmpc_tools.sitl_video: places/keeps the RViz and Gazebo windows on top while recording

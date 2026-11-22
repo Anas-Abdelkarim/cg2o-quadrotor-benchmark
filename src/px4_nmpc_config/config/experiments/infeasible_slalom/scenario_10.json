@@ -1,0 +1,126 @@
+{
+  "schema_version": 5,
+  "coordinate_frame": "arena_ned_floor_center_origin",
+  "controller_frame": "px4_local_ned_persistent_origin",
+  "seed": 9100,
+  "start_ned": [
+    -14.0,
+    0.0,
+    -0.15
+  ],
+  "goal_ned": [
+    14.0,
+    0.0,
+    -2.5
+  ],
+  "goal_yaw": 0.0,
+  "reference_start_ned": [
+    -14.0,
+    0.0,
+    -2.5
+  ],
+  "obstacle_centers_ned": [
+    [
+      -11.5,
+      0.3989999999999999,
+      -2.5
+    ],
+    [
+      -8.944444444444445,
+      -0.3989999999999999,
+      -2.5
+    ],
+    [
+      -6.388888888888889,
+      0.0,
+      -2.101
+    ],
+    [
+      -3.833333333333334,
+      0.0,
+      -2.899
+    ],
+    [
+      -1.2777777777777786,
+      0.2821356056934324,
+      -2.2178643943065675
+    ],
+    [
+      1.2777777777777768,
+      -0.2821356056934324,
+      -2.7821356056934325
+    ],
+    [
+      3.833333333333332,
+      0.2821356056934324,
+      -2.7821356056934325
+    ],
+    [
+      6.388888888888886,
+      -0.2821356056934324,
+      -2.2178643943065675
+    ],
+    [
+      8.944444444444443,
+      0.3989999999999999,
+      -2.5
+    ],
+    [
+      11.5,
+      -0.3989999999999999,
+      -2.5
+    ]
+  ],
+  "obstacle_radii": [
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.35,
+    0.35
+  ],
+  "arena_north_m": 34.0,
+  "arena_east_m": 10.0,
+  "arena_height_m": 6.0,
+  "takeoff_altitude_m": 2.5,
+  "controller_origin_ned": [
+    -14.0,
+    0.0,
+    -0.15
+  ],
+  "experiment_config": {
+    "wall_margin_m": 0.45,
+    "obstacle_count": 10,
+    "obstacle_radius_mean_m": 0.35,
+    "obstacle_radius_std_m": 0.0,
+    "obstacle_radius_min_m": 0.35,
+    "obstacle_radius_max_m": 0.35,
+    "obstacle_min_gap_m": 0.3,
+    "stress_case": "infeasible_slalom"
+  },
+  "stress_metadata": {
+    "scenario_family": "infeasible_slalom",
+    "formulation": "trajectory",
+    "reference_mode": "fixed_line",
+    "initialization": "reference_tracking_rollout",
+    "planner_enabled": false,
+    "obstacle_count": 10,
+    "physical_obstacle_radius_m": 0.35,
+    "uav_radius_m": 0.35,
+    "safety_margin_m": 0.35,
+    "effective_radius_m": 1.0499999999999998,
+    "centerline_offset_m": 0.3989999999999999,
+    "offset_ratio": 0.38,
+    "nominal_centerline_penetration_m": 0.6509999999999999,
+    "navigation_start_ned": [
+      -14.0,
+      0.0,
+      -2.5
+    ],
+    "description": "Straight fixed 3-D centerline intersects every effective obstacle shell; alternating East/Down offsets force repeated avoidance and return-to-centerline behaviour."
+  }
+}

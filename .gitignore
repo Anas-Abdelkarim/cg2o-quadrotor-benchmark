@@ -1,0 +1,42 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+venv/
+.venv/
+
+# colcon / native C++ build products and fetched third-party trees
+/build/
+/install/
+/log/
+/externals/*
+!/externals/COLCON_IGNORE
+
+# Generated outputs; keep curated examples/ tracked
+/results/
+/dist/
+*.egg-info/
+*.so
+*.o
+*.a
+*.whl
+*.log
+/debug.txt
+
+# Local editor/platform files
+.vscode/
+.idea/
+.DS_Store
+
+# Generated figures (make figures)
+/figure/
+# Local working copies (not part of the package)
+/docs/reports/
+
+# Local notes
+/doc_local/

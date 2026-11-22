@@ -1,0 +1,81 @@
+# Thrust-and-rate quadrotor MPC course of the benchmark (Sec. VII of the paper).
+# Same hall as the infeasible slalom (34 x 10 x 6 m, NED, origin at the hall
+# centre). The guide line is North = s with an altitude wave:
+#   altitude h(s) = alt0 + alt_amp * sin(alt_freq * s + alt_phase)
+#               = 2.5 - sin(pi s / 14):  2.5 m at both ends, 3.5 m at s = -7,
+#                 1.5 m at s = +7.
+# Every obstacle except the slot posts sits within 0.3 m of the guide
+# line (well inside its safety shell), so the obstacle-ignorant cold start is
+# infeasible. The 0.3 m offsets alternate sides; an obstacle exactly on the
+# line makes left/right symmetric and produced a deadlock in closed loop.
+# No planner and no
+# waypoints: the optimizer chooses each side, over/under, speed and attitude.
+course:
+  start_s: -14.0
+  goal_s: 14.0
+  guide:
+    e_amp: 0.0
+    e_freq: 0.0
+    e_phase: 0.0
+    alt0: 2.5
+    alt_amp: 1.0
+    alt_freq: 0.224399475256414   # pi / 14
+    alt_phase: 3.141592653589793  # pi
+  arena:
+    lower: [-16.55, -4.55, -5.55]   # 0.45 m wall margin; ceiling at 5.55 m
+    upper: [16.55, 4.55, -0.30]     # floor at 0.30 m altitude
+  # [type, a, b, c, radius]; type 0 sphere (N,E,D), 1 vertical post (N,E),
+  # 2 horizontal bar along East through (N, D) (b unused). Positions in m.
+  # Sphere D values are the guide altitude at that s (negated).
+  obstacles:
+    - [0, -10.5,  0.30, -3.2071, 0.40]   # sphere on the climb
+    - [2,  -7.0,  0.00, -3.5000, 0.08]   # bar at the wave crest: over or under
+    - [1,  -4.0, -0.30,  0.0,    0.20]   # post
+    - [0,  -1.0,  0.30, -2.7225, 0.50]   # large sphere
+    - [1,   2.0, -0.30,  0.0,    0.20]   # post
+    - [0,   4.5,  0.30, -1.6533, 0.40]   # sphere on the descent
+    - [2,   7.0,  0.00, -1.5000, 0.08]   # bar at the wave trough: over or under
+    - [1,  10.0,  1.05,  0.0,    0.20]   # slot, east post (level drone at yaw 0: 0.11 m spare)
+    - [1,  10.0, -1.05,  0.0,    0.20]   # slot, west post
+    - [0,  12.0, -0.30, -2.0661, 0.40]   # sphere before the goal
+
+vehicle:                              # Gazebo x500
+  mass: 2.0643076923
+  hover_throttle: 0.729               # quadratic ESC map, omega 150..1000 rad/s
+  thrust_max_over_hover: 1.688        # (1000 / 769.65)^2
+  # Airframe: centre body sphere and the four rotors (FRD, m).
+  body: [[0.0, 0.0, 0.0], [0.177, 0.177, 0.0], [0.177, -0.177, 0.0],
+         [-0.177, 0.177, 0.0], [-0.177, -0.177, 0.0]]
+  body_radius: [0.12, 0.16, 0.16, 0.16, 0.16]   # rotor: 0.127 m propeller + 0.033 m
+
+mpc:
+  # PX4 rate loop as a first-order lag [roll, pitch, yaw] in s, fitted to rate setpoint vs measured
+  # rate in the PX4/Gazebo log of results/sitl/challenging_warm_v25_headless_r4 (R^2 0.96/0.95/0.89).
+  tau_rate: [0.095, 0.070, 0.390]
+  flight_max_iterations: 80          # real-time budget in PX4 (offline p95 ~38)
+  N: 40
+  dt: 0.1
+  tilt_max_deg: 40.0
+  thrust_min_over_hover: 0.25
+  thrust_max_margin: 0.90             # use 90 % of the maximum thrust
+  rate_xy: 1.5                        # rad/s; 2.5 produced rate steps the Gazebo x500 rate loop lagged
+  rate_z: 1.5
+  vmax_margin: 1.0                    # speed bound = vs_max + 1 m/s
+  vs_max: 2.5                         # guide progress speed cap [m/s], stage 1 of 2.5 -> 3.5 -> 4.5
+  margin: 0.40                        # tracking reserve on every obstacle row. PX4/Gazebo flights:
+                                      # 0.15 m -> propeller hit a sphere; 0.30 m -> 0.02 m contact with a post
+  weights:
+    lag: 40.0
+    lag_terminal: 200.0
+    contour: 0.5
+    contour_terminal: 2.0
+    heading: 10.0                     # yaw follows the tangent; at 1.0 yaw swung +-60 deg in PX4
+    attitude: 0.1
+    thrust: 0.01
+    rate: 0.05
+    progress: 0.2                     # weak per-stage regularizer (vs - vs_max)^2
+    goal: 20.0                        # linear terminal progress reward [1/m]
+    goal_delta: 2.0                   # m; keeps the LS form smooth at the goal
+    slew: [0.1, 3.0, 3.0, 1.0, 1.0]    # [T, wx, wy, wz, vs]; smaller values gave thrust/rate steps
+                                      # (27.8 -> 6.5 N in 0.2 s) that PX4/Gazebo tracked with large lag
+    slack: 10000.0

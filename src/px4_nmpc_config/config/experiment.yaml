@@ -1,0 +1,46 @@
+# High-level randomized experiment configuration.
+# Coordinates use PX4 local NED. Arena dimensions are centered at N=E=0.
+experiment:
+  seed: 65
+
+  # Arena geometry (metres)
+  arena_north_m: 14.0
+  arena_east_m: 10.0
+  arena_height_m: 5.0
+  wall_margin_m: 0.45
+  quadrant_margin_m: 1.2
+
+  # Start/goal placement in a top view where North is up and East is right.
+  start_quadrant: lower_right
+  goal_quadrant: upper_left
+  start_altitude_m: 0.15
+  # Navigation begins only after a vertical take-off to this altitude above the
+  # floor. The generator keeps the vertical take-off corridor clear. The controller receives
+  # the matching takeoff_height_m through scenario.yaml.
+  takeoff_altitude_m: 1.5
+  takeoff_corridor_clearance_m: 0.75
+  goal_altitude_min_m: 2.2
+  goal_altitude_max_m: 4.0
+  goal_yaw: 0.0
+
+  # Spherical obstacle population.
+  obstacle_count: 20
+  obstacle_radius_mean_m: 0.50
+  obstacle_radius_std_m: 0.10
+  obstacle_radius_min_m: 0.30
+  obstacle_radius_max_m: 1.00
+  obstacle_min_gap_m: 0.30
+  obstacle_boundary_clearance_m: 0.25
+  start_goal_clearance_m: 1.40
+
+  # Reject random layouts that do not have a coarse horizontal A* route.
+  feasibility_resolution_m: 0.35
+  feasibility_uav_clearance_m: 0.75
+  max_layout_attempts: 100
+  max_candidate_attempts: 2000
+
+  # Gazebo appearance.
+  wall_thickness_m: 0.18
+  floor_tile_gap_m: 0.04
+  ceiling_collision: true
+  ceiling_transparency: 0.82

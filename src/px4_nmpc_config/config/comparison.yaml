@@ -1,0 +1,34 @@
+comparison:
+  # Paired Monte-Carlo design: each backend receives exactly the same geometry.
+  seeds: "0:20"
+  obstacle_counts: [5, 10, 15, 20]
+  backends: [ipopt_casadi, ipopt_cpp, cg2o]
+  control_interface: trajectory
+  active_constraint_tolerance: 1.0e-3
+
+  obstacle_distribution:
+    radius_mean_m: 0.50
+    radius_std_m: 0.10
+    radius_min_m: 0.30
+    radius_max_m: 1.00
+    min_gap_m: 0.30
+
+  level1_single_solve:
+    enabled: true
+    cold_start_repeats: 10
+
+  level2_offline_closed_loop:
+    enabled: true
+    t_max_s: 60.0
+    latency_scale: 1.0
+    # Optional live retarget experiment. Empty = static target benchmark.
+    target_schedule: []
+    # Example:
+    # target_schedule:
+    #   - {time_s: 8.0, goal_ned: [3.0, -1.0, -2.5]}
+
+  level3_px4_gazebo:
+    enabled: true
+    t_max_s: 60.0
+    video_seed: 0
+    video_obstacle_count: 5

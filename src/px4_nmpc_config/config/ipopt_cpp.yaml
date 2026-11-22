@@ -1,0 +1,18 @@
+ipopt_cpp:
+  # Direct C++ IPOPT TNLP settings. Objective gradient, sparse constraint Jacobian and sparse
+  # Lagrangian Hessian are analytical; CasADi is not on the solve path. Any key can be overridden
+  # per run from Python with cfg['ipopt_cpp_overrides'] (experiments, tuning).
+  linear_solver: mumps          # mumps | spral | pardisomkl (local IPOPT 3.14 build) | ma27.. (HSL)
+  hessian_approximation: exact
+  mu_strategy: adaptive
+  acceptable_tol: 1.0e-3
+  acceptable_iter: 3
+  print_level: 0
+  # receding-horizon warm start: primal (shifted primal guess, IPOPT initialises the duals) or
+  # primal_dual (shifted primal + constraint/bound multipliers, warm_start_init_point=yes)
+  warm_start: primal
+  terminal_rollout: true
+  # any further IPOPT option (typed by value; true/false -> yes/no), e.g.
+  #   min_refinement_steps: 0
+  #   warm_start_bound_push: 1.0e-6
+  options: {}

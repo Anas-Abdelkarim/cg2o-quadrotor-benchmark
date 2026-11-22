@@ -1,0 +1,219 @@
+{
+ "study": "results/tuning/20261110_133924_challenging_cg2o_cold",
+ "case": "ccold_headless",
+ "default_solve_ms_mean": 68.1574,
+ "search_trials": 150,
+ "accepted": 71,
+ "accepted_median_rel": 0.8038349467555982,
+ "fastest_five": [
+  {
+   "trial": 14,
+   "rel": 0.4542676217109221,
+   "accepted": false,
+   "reasons": "case=cold_headless repeat=0: unusable_fraction=1 violates <=0; case=cold_headless repeat=0: cost_excess_rel_median=1 violates <=0.02"
+  },
+  {
+   "trial": 37,
+   "rel": 0.5978793205139867,
+   "accepted": false,
+   "reasons": "case=cold_headless repeat=0: unusable_fraction=1 violates <=0; case=cold_headless repeat=0: cost_excess_rel_median=1 violates <=0.02"
+  },
+  {
+   "trial": 118,
+   "rel": 0.6287857224600705,
+   "accepted": false,
+   "reasons": "case=cold_headless repeat=0: unusable_fraction=0.0049505 violates <=0; case=cold_headless repeat=0: hit_max_fraction=0.0346535 violates <=0.02"
+  },
+  {
+   "trial": 68,
+   "rel": 0.6424511498384622,
+   "accepted": false,
+   "reasons": "case=cold_headless repeat=0: unusable_fraction=0.00990099 violates <=0"
+  },
+  {
+   "trial": 111,
+   "rel": 0.6490183017544684,
+   "accepted": true,
+   "reasons": ""
+  }
+ ],
+ "groups": [
+  {
+   "option": "Prediction",
+   "setting": "linearized, full step (rec.)",
+   "trials": 98,
+   "rejected": 0.2857142857142857,
+   "median_rel_time": 0.8025959030127323
+  },
+  {
+   "option": "Prediction",
+   "setting": "nonlinear or damped",
+   "trials": 52,
+   "rejected": 0.9807692307692307,
+   "median_rel_time": 0.9089636635200287
+  },
+  {
+   "option": "Barrier update",
+   "setting": "lower-bounded (rec.)",
+   "trials": 15,
+   "rejected": 0.19999999999999996,
+   "median_rel_time": 0.8942286530882928
+  },
+  {
+   "option": "Barrier update",
+   "setting": "bounded by kappa0",
+   "trials": 20,
+   "rejected": 0.35,
+   "median_rel_time": 0.9014266976146391
+  },
+  {
+   "option": "Barrier update",
+   "setting": "duality gap only",
+   "trials": 55,
+   "rejected": 0.21818181818181814,
+   "median_rel_time": 0.7759201495362207
+  },
+  {
+   "option": "Barrier update",
+   "setting": "fixed factor (nested)",
+   "trials": 8,
+   "rejected": 0.75,
+   "median_rel_time": 0.9624318122463591
+  },
+  {
+   "option": "Positivity",
+   "setting": "scaling (rec.)",
+   "trials": 77,
+   "rejected": 0.22077922077922074,
+   "median_rel_time": 0.8011250429153695
+  },
+  {
+   "option": "Positivity",
+   "setting": "correction",
+   "trials": 21,
+   "rejected": 0.5238095238095238,
+   "median_rel_time": 0.8543672440556712
+  },
+  {
+   "option": "zeta_aux",
+   "setting": "[-inf, 0.5)",
+   "trials": 7,
+   "rejected": 0.4285714285714286,
+   "median_rel_time": 1.136071798513441
+  },
+  {
+   "option": "zeta_aux",
+   "setting": "[0.5, 0.8)",
+   "trials": 37,
+   "rejected": 0.2702702702702703,
+   "median_rel_time": 0.8358079973707918
+  },
+  {
+   "option": "zeta_aux",
+   "setting": "[0.8, inf)",
+   "trials": 54,
+   "rejected": 0.2777777777777778,
+   "median_rel_time": 0.789639863022944
+  },
+  {
+   "option": "kappa_final",
+   "setting": "[-inf, 1000)",
+   "trials": 54,
+   "rejected": 0.16666666666666663,
+   "median_rel_time": 0.7729857653020802
+  },
+  {
+   "option": "kappa_final",
+   "setting": "[1000, 3000)",
+   "trials": 13,
+   "rejected": 0.3076923076923077,
+   "median_rel_time": 0.8241819670351276
+  },
+  {
+   "option": "kappa_final",
+   "setting": "[3000, 8000)",
+   "trials": 13,
+   "rejected": 0.46153846153846156,
+   "median_rel_time": 0.9331517927620478
+  },
+  {
+   "option": "kappa_final",
+   "setting": "[8000, inf)",
+   "trials": 18,
+   "rejected": 0.5,
+   "median_rel_time": 0.9264863389741981
+  },
+  {
+   "option": "beta",
+   "setting": "[-inf, 0.05)",
+   "trials": 15,
+   "rejected": 0.5333333333333333,
+   "median_rel_time": 0.9125186700196898
+  },
+  {
+   "option": "beta",
+   "setting": "[0.05, 0.3)",
+   "trials": 25,
+   "rejected": 0.28,
+   "median_rel_time": 0.8988547098334151
+  },
+  {
+   "option": "beta",
+   "setting": "[0.3, inf)",
+   "trials": 37,
+   "rejected": 0.05405405405405406,
+   "median_rel_time": 0.7950449987822307
+  },
+  {
+   "option": "zeta_ineq",
+   "setting": "[-inf, 0.03)",
+   "trials": 1,
+   "rejected": 1.0,
+   "median_rel_time": null
+  },
+  {
+   "option": "zeta_ineq",
+   "setting": "[0.03, 0.3)",
+   "trials": 43,
+   "rejected": 0.2325581395348837,
+   "median_rel_time": 0.8013568592698666
+  },
+  {
+   "option": "zeta_ineq",
+   "setting": "[0.3, inf)",
+   "trials": 54,
+   "rejected": 0.31481481481481477,
+   "median_rel_time": 0.8144324754171961
+  }
+ ],
+ "spearman_accepted_linear": {
+  "zeta_aux": {
+   "n": 70,
+   "rho": -0.29465488583675964
+  },
+  "zeta_ineq": {
+   "n": 70,
+   "rho": -0.03728457702738168
+  },
+  "kappa_final": {
+   "n": 70,
+   "rho": 0.5384480797830461
+  },
+  "beta": {
+   "n": 60,
+   "rho": -0.3552097804945819
+  },
+  "nu": {
+   "n": 70,
+   "rho": -0.3817163852681305
+  },
+  "tau": {
+   "n": 12,
+   "rho": 0.37762237762237766
+  },
+  "kappa0": {
+   "n": 45,
+   "rho": -0.06403162055335967
+  }
+ }
+}

@@ -1,0 +1,76 @@
+{
+  "status": "validated",
+  "selected_trial": 83,
+  "objective": {
+    "metric": "solve_ms_mean",
+    "mode": "relative",
+    "direction": "minimize",
+    "penalties": {}
+  },
+  "winner": {
+    "trial_id": 83,
+    "phase": "validation",
+    "values": {
+      "ipopt.warm_start": "primal",
+      "ipopt.hessian": "exact",
+      "ipopt.linear_solver": "ma27",
+      "ipopt.mu_strategy": "adaptive",
+      "ipopt.mu_oracle": "loqo",
+      "ipopt.mu_init": 0.009712385975669487,
+      "ipopt.bound_push": 0.0018105055623445436,
+      "ipopt.bound_frac": 8.48242899784474e-09,
+      "ipopt.nlp_scaling_method": "gradient-based",
+      "ipopt.barrier_tol_factor": 58.89939049722218
+    },
+    "fidelity": 0,
+    "runs": [
+      {
+        "case": "warm_headless",
+        "case_key": "\"warm_headless\"",
+        "repeat": 0,
+        "seed": 1152832105,
+        "metrics": {
+          "solve_ms_mean": 114.53281496,
+          "solve_ms_p95": 228.46652420000004,
+          "iterations_mean": 27.604444444444443,
+          "unusable_fraction": 0.0,
+          "hit_max_fraction": 0.0,
+          "eq_residual_max": 3.9061704819598475e-06,
+          "ineq_violation_max": 3.4684170178156393e-06,
+          "cost_excess_rel_median": -6.6138607637868e-08,
+          "cost_excess_rel_p95": 1.760520470932308e-05
+        },
+        "error": "",
+        "directory": "artifacts/trial-000083/case-000/repeat-000"
+      },
+      {
+        "case": "warm_video",
+        "case_key": "\"warm_video\"",
+        "repeat": 0,
+        "seed": 831299309,
+        "metrics": {
+          "solve_ms_mean": 103.04070560447761,
+          "solve_ms_p95": 180.4425505500002,
+          "iterations_mean": 25.100746268656717,
+          "unusable_fraction": 0.0,
+          "hit_max_fraction": 0.0,
+          "eq_residual_max": 2.8138372092367803e-06,
+          "ineq_violation_max": 9.999932604198847e-09,
+          "cost_excess_rel_median": -4.951124138459349e-07,
+          "cost_excess_rel_p95": 1.3658416805447617e-05
+        },
+        "error": "",
+        "directory": "artifacts/trial-000083/case-001/repeat-000"
+      }
+    ],
+    "score": 1.93000659714667,
+    "reasons": [],
+    "cached_from": null,
+    "accepted": true
+  },
+  "validation_cases": [
+    "warm_headless",
+    "warm_video"
+  ],
+  "limitation": "Best among evaluated finalists under these criteria; not a global optimum or independent scenario validation."
+}

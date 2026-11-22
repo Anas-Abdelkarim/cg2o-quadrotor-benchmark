@@ -1,0 +1,39 @@
+# cg2o warm start on the stored PX4 problem sequences (equal budget and gates as ipopt_warm.yaml).
+# Defaults = repository cg2o.yaml + course overrides (the baseline).
+method: tpe
+experiment:
+  type: python
+  entrypoint: px4_nmpc_compare.challenging_tune:evaluate_cg2o
+  revision: '1'
+parameters:
+  - {key: cg2o.warm_start.strategy, kind: cat, choices: [1, 2], default: 1}
+  - {key: cg2o.warm_start.kappa_strategy, kind: cat, choices: [0, 1, 2, 3], default: 0}
+  - {key: cg2o.warm_start.kappa_factor, kind: log, low: 0.001, high: 10.0, default: 1.0, active_if: {cg2o.warm_start.kappa_strategy: [0]}}
+  - {key: cg2o.warm_start.kappa_value, kind: log, low: 0.01, high: 10000.0, default: 1.0, active_if: {cg2o.warm_start.kappa_strategy: [2]}}
+  - {key: cg2o.warm_start.kappa_gap, kind: log, low: 1.0e-4, high: 1.0, default: 0.01, active_if: {cg2o.warm_start.kappa_strategy: [3]}}
+  - {key: cg2o.warm_start.push, kind: float, low: 0.0, high: 0.1, default: 0.0}
+  - {key: cg2o.warm_start.centering_lo, kind: float, low: 0.0, high: 0.5, default: 0.0}
+  - {key: cg2o.warm_start.reset_tolerance, kind: float, low: 0.0, high: 20.0, default: 0.5}
+  - {key: cg2o.warm_start.reset_mode, kind: cat, choices: [0, 1, 2], default: 2}
+  - {key: cg2o.warm_start.reset_test, kind: cat, choices: [0, 1, 2], default: 1}
+  - {key: cg2o.ispd.ineq_backtracking_step_min, kind: log, low: 0.005, high: 1.0, default: 0.03}
+  - {key: cg2o.ispd.aux_backtracking_step_min, kind: float, low: 0.1, high: 1.0, default: 0.7}
+  - {key: cg2o.ispd.tau, kind: float, low: 1.05, high: 3.0, default: 1.4}
+  - {key: cg2o.ispd.kappa_final, kind: log, low: 100.0, high: 100000.0, default: 1500.0}
+constraints:
+  - {metric: unusable_fraction, limit: 0.0}
+  - {metric: hit_max_fraction, limit: 0.02}
+  - {metric: eq_residual_max, limit: 1.0e-3}
+  - {metric: ineq_violation_max, limit: 1.0e-3}
+  - {metric: cost_excess_rel_median, limit: 0.02}
+objective: {metric: solve_ms_mean, mode: relative}
+settings:
+  cases: [warm_headless]          # screening: warm PX4 flight, 225 navigation problems
+  validation_cases: [warm_video]  # validation adds a second warm PX4 flight, 268 problems
+  screening_fidelity: 0           # whole sequence (warm starts need it)
+  validation_fidelity: 0
+  repeats: 1
+  validation_repeats: 1
+  validate_top: 4
+  jobs: 1                         # timing: one solve at a time, run under taskset -c 0-3
+  seed: 14

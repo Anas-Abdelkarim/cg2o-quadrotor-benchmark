@@ -1,0 +1,89 @@
+# IPOPT COLD start on the stored PX4 problems (equal budget, 150 trials, and gates as cg2o_cold.yaml).
+# Time excludes the exact-Hessian evaluation (Hessian assumed free). Defaults = replay baseline (MA57).
+method: tpe
+experiment:
+  type: python
+  entrypoint: px4_nmpc_compare.challenging_tune:evaluate_ipopt
+  revision: '1'
+parameters:
+- key: ipopt.hessian
+  kind: cat
+  choices:
+  - exact
+  - gauss-newton
+  default: exact
+- key: ipopt.linear_solver
+  kind: cat
+  choices:
+  - ma57
+  - ma27
+  - mumps
+  default: ma57
+- key: ipopt.mu_strategy
+  kind: cat
+  choices:
+  - adaptive
+  - monotone
+  default: adaptive
+- key: ipopt.mu_oracle
+  kind: cat
+  choices:
+  - quality-function
+  - probing
+  - loqo
+  default: quality-function
+  active_if:
+    ipopt.mu_strategy:
+    - adaptive
+- key: ipopt.mu_init
+  kind: log
+  low: 1.0e-09
+  high: 0.1
+  default: 0.1
+- key: ipopt.bound_push
+  kind: log
+  low: 1.0e-09
+  high: 0.1
+  default: 0.01
+- key: ipopt.bound_frac
+  kind: log
+  low: 1.0e-09
+  high: 0.49
+  default: 0.01
+- key: ipopt.nlp_scaling_method
+  kind: cat
+  choices:
+  - gradient-based
+  - none
+  default: gradient-based
+- key: ipopt.barrier_tol_factor
+  kind: log
+  low: 1.0
+  high: 100.0
+  default: 10.0
+constraints:
+- metric: unusable_fraction
+  limit: 0.0
+- metric: hit_max_fraction
+  limit: 0.02
+- metric: eq_residual_max
+  limit: 0.001
+- metric: ineq_violation_max
+  limit: 0.001
+- metric: cost_excess_rel_median
+  limit: 0.02
+objective:
+  metric: solve_ms_mean
+  mode: relative
+settings:
+  cases:
+  - cold_headless
+  validation_cases:
+  - video_as_cold
+  screening_fidelity: 0
+  validation_fidelity: 0
+  repeats: 1
+  validation_repeats: 1
+  validate_top: 4
+  jobs: 1
+  seed: 21

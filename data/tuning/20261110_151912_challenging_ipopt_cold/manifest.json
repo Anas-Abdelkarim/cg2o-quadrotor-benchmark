@@ -1,0 +1,212 @@
+{
+  "custom_strategy": null,
+  "schema": 2,
+  "package_code": "df251430abf5ccab350eb3f52797248a6a67cb2b8272ffa75e9fb01ce1213afc",
+  "python": "3.10.12",
+  "dependencies": {
+    "PyYAML": "6.0.2",
+    "optuna": "4.9.0",
+    "numpy": "1.26.4"
+  },
+  "space": [
+    {
+      "key": "ipopt.hessian",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        "exact",
+        "gauss-newton"
+      ],
+      "default": "exact",
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.linear_solver",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        "ma57",
+        "ma27",
+        "mumps"
+      ],
+      "default": "ma57",
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.mu_strategy",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        "adaptive",
+        "monotone"
+      ],
+      "default": "adaptive",
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.mu_oracle",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        "quality-function",
+        "probing",
+        "loqo"
+      ],
+      "default": "quality-function",
+      "grid": [],
+      "optional": false,
+      "active_if": {
+        "ipopt.mu_strategy": [
+          "adaptive"
+        ]
+      },
+      "doc": ""
+    },
+    {
+      "key": "ipopt.mu_init",
+      "kind": "log",
+      "low": 1e-09,
+      "high": 0.1,
+      "choices": [],
+      "default": 0.1,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.bound_push",
+      "kind": "log",
+      "low": 1e-09,
+      "high": 0.1,
+      "choices": [],
+      "default": 0.01,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.bound_frac",
+      "kind": "log",
+      "low": 1e-09,
+      "high": 0.49,
+      "choices": [],
+      "default": 0.01,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.nlp_scaling_method",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        "gradient-based",
+        "none"
+      ],
+      "default": "gradient-based",
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "ipopt.barrier_tol_factor",
+      "kind": "log",
+      "low": 1.0,
+      "high": 100.0,
+      "choices": [],
+      "default": 10.0,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    }
+  ],
+  "relations": [],
+  "experiment": {
+    "adapter": "python",
+    "entrypoint": "px4_nmpc_compare.challenging_tune:evaluate_ipopt",
+    "revision": "1",
+    "source": "6da433a8a4034ba05dfa447ff2554039d24055f1911c3c89288497d51f152551",
+    "inputs": {}
+  },
+  "baseline": {
+    "ipopt.hessian": "exact",
+    "ipopt.linear_solver": "ma57",
+    "ipopt.mu_strategy": "adaptive",
+    "ipopt.mu_oracle": "quality-function",
+    "ipopt.mu_init": 0.1,
+    "ipopt.bound_push": 0.01,
+    "ipopt.bound_frac": 0.01,
+    "ipopt.nlp_scaling_method": "gradient-based",
+    "ipopt.barrier_tol_factor": 10.0
+  },
+  "objective": {
+    "metric": "solve_ms_mean",
+    "mode": "relative",
+    "direction": "minimize",
+    "penalties": {}
+  },
+  "constraints": [
+    {
+      "metric": "unusable_fraction",
+      "limit": 0.0,
+      "op": "<="
+    },
+    {
+      "metric": "hit_max_fraction",
+      "limit": 0.02,
+      "op": "<="
+    },
+    {
+      "metric": "eq_residual_max",
+      "limit": 0.001,
+      "op": "<="
+    },
+    {
+      "metric": "ineq_violation_max",
+      "limit": 0.001,
+      "op": "<="
+    },
+    {
+      "metric": "cost_excess_rel_median",
+      "limit": 0.02,
+      "op": "<="
+    }
+  ],
+  "settings": {
+    "cases": [
+      "cold_headless"
+    ],
+    "validation_cases": [
+      "video_as_cold"
+    ],
+    "screening_fidelity": 0,
+    "validation_fidelity": 0,
+    "repeats": 1,
+    "validation_repeats": 1,
+    "validate_top": 4,
+    "jobs": 1,
+    "seed": 21,
+    "cache": true,
+    "strategy_options": null
+  },
+  "method": "tpe"
+}

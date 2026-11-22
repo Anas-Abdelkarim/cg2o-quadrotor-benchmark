@@ -1,0 +1,14 @@
+{
+  "cg2o.warm_start.strategy": 1,
+  "cg2o.warm_start.kappa_strategy": 3,
+  "cg2o.warm_start.kappa_gap": 0.00010005737343182277,
+  "cg2o.warm_start.push": 0.009230744397979062,
+  "cg2o.warm_start.centering_lo": 0.10378156774900099,
+  "cg2o.warm_start.reset_tolerance": 11.776040466694456,
+  "cg2o.warm_start.reset_mode": 2,
+  "cg2o.warm_start.reset_test": 1,
+  "cg2o.ispd.ineq_backtracking_step_min": 0.009465449133481737,
+  "cg2o.ispd.aux_backtracking_step_min": 0.7408977992984,
+  "cg2o.ispd.tau": 1.2853112820353894,
+  "cg2o.ispd.kappa_final": 129.4781213826208
+}

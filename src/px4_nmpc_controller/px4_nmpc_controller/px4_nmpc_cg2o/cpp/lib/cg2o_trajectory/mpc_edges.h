@@ -1,0 +1,18 @@
+#pragma once
+// Aggregated include. Edge implementations are split by responsibility in edges/.
+#include "edges/edge_cost_first_input_delta.h"
+#include "edges/edge_cost_hinge_arena.h"
+#include "edges/edge_cost_hinge_obstacle.h"
+#include "edges/edge_cost_input.h"
+#include "edges/edge_cost_slack.h"
+#include "edges/edge_cost_state.h"
+#include "edges/edge_dynamics.h"
+#include "edges/edge_ineq_acc_down.h"
+#include "edges/edge_ineq_acc_up.h"
+#include "edges/edge_ineq_arena.h"
+#include "edges/edge_ineq_jerk_bounds.h"
+#include "edges/edge_ineq_obstacle.h"
+#include "edges/edge_ineq_slack_nonneg.h"
+#include "edges/edge_ineq_tilt_cone.h"
+#include "edges/edge_ineq_vel_max.h"
+#include "edges/edge_yaw.h"

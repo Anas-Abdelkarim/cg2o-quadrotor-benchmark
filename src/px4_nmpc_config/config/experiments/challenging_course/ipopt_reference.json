@@ -1,0 +1,4 @@
+{
+ "ipopt.hessian": "exact",
+ "ipopt.linear_solver": "ma57"
+}

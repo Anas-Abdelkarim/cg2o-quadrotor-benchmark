@@ -1,0 +1,4 @@
+add_library(px4_nmpc_ipopt_cpp_core STATIC native_ipopt_solver.cpp)
+target_include_directories(px4_nmpc_ipopt_cpp_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(px4_nmpc_ipopt_cpp_core PUBLIC Eigen3::Eigen PkgConfig::IPOPT)
+target_compile_features(px4_nmpc_ipopt_cpp_core PUBLIC cxx_std_17)

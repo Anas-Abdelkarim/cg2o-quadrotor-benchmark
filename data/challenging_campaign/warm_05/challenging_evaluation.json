@@ -1,0 +1,27 @@
+{
+  "outcome": "goal",
+  "time_to_goal_s": 14.399113893508911,
+  "min_true_body_clearance_m": 0.23529405310607696,
+  "closest_obstacle": [
+    1.0,
+    -4.0,
+    -0.3,
+    0.0,
+    0.2
+  ],
+  "closest_position_hall_ned": [
+    -4.063197506551723,
+    0.489530672394992,
+    -3.3661221401449817
+  ],
+  "tracking_reserve_m": 0.4,
+  "max_true_tilt_deg": 20.590220807347368,
+  "max_true_speed_mps": 2.894767099116005,
+  "filtered_jerk_rms_mps3": 6.051662272305078,
+  "path_length_m": 30.06009196536155,
+  "vertical_span_m": 3.098819793558503,
+  "lateral_span_m": 1.9537670887107135,
+  "solves": 235,
+  "usable": 232,
+  "evaluation": "Gazebo truth after the flight; five airframe spheres, true attitude, all course obstacles"
+}

@@ -1,0 +1,19 @@
+validated
+method: tpe
+objective: solve_ms_mean (relative)
+validation cases: ('warm_headless', 'warm_video')
+selected trial: 83
+score: 1.9300066
+{
+  "ipopt.warm_start": "primal",
+  "ipopt.hessian": "exact",
+  "ipopt.linear_solver": "ma27",
+  "ipopt.mu_strategy": "adaptive",
+  "ipopt.mu_oracle": "loqo",
+  "ipopt.mu_init": 0.009712385975669487,
+  "ipopt.bound_push": 0.0018105055623445436,
+  "ipopt.bound_frac": 8.48242899784474e-09,
+  "ipopt.nlp_scaling_method": "gradient-based",
+  "ipopt.barrier_tol_factor": 58.89939049722218
+}
+Best among evaluated finalists under these criteria; not a global optimum or independent scenario validation.

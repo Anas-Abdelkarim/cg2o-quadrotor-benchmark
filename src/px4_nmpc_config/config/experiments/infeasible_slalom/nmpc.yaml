@@ -1,0 +1,76 @@
+# Infeasible-slalom NMPC overrides.
+#
+# This is NOT a new controller formulation. It uses the existing trajectory
+# OCP in all three backends, but deliberately changes the reference/mission so
+# the cold start violates obstacle inequalities and the closed-loop controller
+# must repeatedly leave and return to one fixed centerline.
+px4_nmpc_controller:
+  ros__parameters:
+    control_interface: trajectory
+    yaw_mode: fixed
+
+    # Receding horizon: long enough to see several obstacles, short enough that
+    # new obstacles continuously enter the horizon during closed-loop flight.
+    control_dt: 0.10
+    horizon_steps: 40
+    max_obstacles: 10
+    solver_max_iter: 250
+    solver_tol: 1.0e-4
+    solver_max_wall_time_s: 2.5
+    gap_tolerance: 2.0e-3
+
+    # Keep the first navigation start->goal line fixed. A* is intentionally
+    # disabled: the constrained solver, not a global planner, must recover from
+    # the infeasible straight-line initialization.
+    guidance_mode: fixed_line
+    planner_enabled: false
+    desired_speed: 2.7
+    reference_accel_max: 1.8
+    reference_decel_max: 2.0
+
+    # High-speed dynamic limits: deliberately demanding but still plausible for
+    # the point-mass trajectory interface used by the benchmark.
+    velocity_max: 3.0
+    tilt_max_deg: 25.0
+    jerk_max: [7.0, 7.0, 5.0]
+    acc_up_max: 3.5
+    acc_down_max: 3.0
+
+    # Strong cross-track/altitude tracking pulls the vehicle back toward the
+    # same centerline after each obstacle. Along-track position is lighter;
+    # forward velocity tracking is stronger to favour fast progress.
+    w_pos: [2.0, 30.0, 30.0]
+    w_vel: [6.0, 2.0, 2.0]
+    w_pos_terminal: [20.0, 90.0, 90.0]
+    w_vel_terminal: [14.0, 6.0, 6.0]
+    w_acc: 0.20
+    w_jerk: 0.015
+
+    # Obstacle safety is much more expensive than centerline error. The
+    # inequalities remain soft for numerical robustness but a solution that
+    # uses meaningful obstacle slack is rejected by the runtime.
+    w_slack_obstacle_l1: 6000.0
+    w_slack_obstacle_l2: 12000.0
+    w_slack_arena_l1: 1500.0
+    w_slack_arena_l2: 3000.0
+    w_slack_dynamic_l1: 400.0
+    w_slack_dynamic_l2: 800.0
+    w_terminal_penalty: 6000.0
+    accept_obstacle_slack_m: 0.03
+
+    # Physical/safety assumptions used by the deterministic generator.
+    uav_radius: 0.35
+    safety_margin: 0.35
+
+    # Scenario JSON overwrites goal, obstacle locations and arena origin; these
+    # dimensions are repeated here so standalone use remains self-describing.
+    arena_north_m: 34.0
+    arena_east_m: 10.0
+    arena_height_m: 6.0
+    arena_state_margin_m: 0.40
+    arena_floor_clearance_m: 0.30
+
+    goal_tolerance: 0.35
+    goal_speed_tolerance: 0.35
+    goal_capture_radius_m: 0.8
+    goal_capture_speed_mps: 0.45

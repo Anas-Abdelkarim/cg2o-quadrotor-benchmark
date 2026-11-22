@@ -1,0 +1,82 @@
+{
+  "status": "validated",
+  "selected_trial": 153,
+  "objective": {
+    "metric": "solve_ms_mean",
+    "mode": "relative",
+    "direction": "minimize",
+    "penalties": {}
+  },
+  "winner": {
+    "trial_id": 153,
+    "phase": "validation",
+    "values": {
+      "cg2o.ispd.kappa_final": 183.76378908417033,
+      "cg2o.ispd.init_kappa_strategy": 0,
+      "cg2o.ispd.kappa_initial": 9.463515562226394,
+      "cg2o.ispd.update_kappa_strategy": 2,
+      "cg2o.ispd.kappa_update_factor": 91.16769705361068,
+      "cg2o.ispd.step_size_strategy": 1,
+      "cg2o.ispd.ineq_backtracking_step_min": 0.3561908125096714,
+      "cg2o.ispd.aux_backtracking_step_min": 0.9670205783443668,
+      "cg2o.ispd.keep_aux_positive_strategy": 0,
+      "cg2o.ispd.aux_scaling_factor": 0.49608023537369944,
+      "cg2o.ispd.init_slack_strategy": 1,
+      "cg2o.ispd.slack_variable_initial": 2.139006459168406,
+      "cg2o.ispd.init_lagrange_strategy": 0,
+      "cg2o.ispd.lagrange_multiplier_initial": 3.7086282716230246,
+      "cg2o.ispd.ineq_prediction_strategy": 0,
+      "cg2o.ispd.ineq_prediction_step_strategy": 0
+    },
+    "fidelity": 0,
+    "runs": [
+      {
+        "case": "cold_headless",
+        "case_key": "\"cold_headless\"",
+        "repeat": 0,
+        "seed": 1753089144,
+        "metrics": {
+          "solve_ms_mean": 44.984158212871286,
+          "solve_ms_p95": 105.52107439999997,
+          "iterations_mean": 14.866336633663366,
+          "unusable_fraction": 0.0,
+          "hit_max_fraction": 0.0,
+          "eq_residual_max": 2.9457122656117996e-06,
+          "ineq_violation_max": 0.0,
+          "cost_excess_rel_median": 0.004049150552727346,
+          "cost_excess_rel_p95": 0.02872838098088048
+        },
+        "error": "",
+        "directory": "artifacts/trial-000153/case-000/repeat-000"
+      },
+      {
+        "case": "video_as_cold",
+        "case_key": "\"video_as_cold\"",
+        "repeat": 0,
+        "seed": 644035421,
+        "metrics": {
+          "solve_ms_mean": 44.305073171641794,
+          "solve_ms_p95": 91.2088886,
+          "iterations_mean": 14.01865671641791,
+          "unusable_fraction": 0.0,
+          "hit_max_fraction": 0.0,
+          "eq_residual_max": 4.063322750991194e-06,
+          "ineq_violation_max": 0.0,
+          "cost_excess_rel_median": 0.0044796913315387574,
+          "cost_excess_rel_p95": 0.02079809731390273
+        },
+        "error": "",
+        "directory": "artifacts/trial-000153/case-001/repeat-000"
+      }
+    ],
+    "score": 0.5747174316045072,
+    "reasons": [],
+    "cached_from": null,
+    "accepted": true
+  },
+  "validation_cases": [
+    "cold_headless",
+    "video_as_cold"
+  ],
+  "limitation": "Best among evaluated finalists under these criteria; not a global optimum or independent scenario validation."
+}

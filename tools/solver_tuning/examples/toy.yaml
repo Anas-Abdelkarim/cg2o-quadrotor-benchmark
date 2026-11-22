@@ -1,0 +1,28 @@
+method: random  # tpe with pip install '.[bo]', or coordinate; DE needs numeric-only space
+experiment:
+  type: python
+  entrypoint: toy_problem:evaluate
+  revision: '1'
+parameters:
+  - {key: x, kind: float, low: -4, high: 4, default: 0}
+  - {key: rate, kind: log, low: 0.001, high: 10, default: 1}
+  - {key: mode, kind: cat, choices: [plain, corrected], default: plain}
+  - key: correction
+    kind: float
+    low: 0
+    high: 1
+    default: 0.5
+    active_if: {mode: [corrected]}
+objective: {metric: loss, mode: relative}
+constraints:
+  - {metric: violation, limit: 0}
+settings:
+  cases: [0, 0.2]
+  validation_cases: [-0.2]  # added to screening cases, never replaces them
+  screening_fidelity: 50
+  validation_fidelity: 0
+  repeats: 1
+  validation_repeats: 2
+  validate_top: 3
+  jobs: 2
+  seed: 17

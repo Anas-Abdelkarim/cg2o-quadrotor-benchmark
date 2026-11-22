@@ -1,0 +1,43 @@
+px4_nmpc_controller:
+  ros__parameters:
+    goal_ned:
+    - 27.874000000000002
+    - 0.716
+    - -2.3500000000000023
+    goal_yaw: 0.0
+    obstacle_centers_flat:
+    - 3.3740000000000006
+    - 1.016
+    - -3.0571
+    - 12.874
+    - 1.016
+    - -2.5725000000000002
+    - 18.374000000000002
+    - 1.016
+    - -1.5033
+    - 25.874000000000002
+    - 0.416
+    - -1.9161000000000001
+    obstacle_radii:
+    - 0.4
+    - 0.5
+    - 0.4
+    - 0.4
+    arena_north_m: 34.0
+    arena_east_m: 10.0
+    arena_height_m: 6.0
+    arena_origin_local_ned:
+    - 13.874
+    - 0.716
+    - 0.15
+    planner_xy_min:
+    - -2.6759999999999993
+    - -3.8339999999999996
+    planner_xy_max:
+    - 30.424000000000003
+    - 5.266
+    takeoff_height_m: 2.35
+    fixed_line_start_ned:
+    - 0.0
+    - 0.0
+    - -2.35

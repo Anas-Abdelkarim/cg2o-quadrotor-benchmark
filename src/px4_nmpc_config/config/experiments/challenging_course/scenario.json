@@ -1,0 +1,172 @@
+{
+  "schema_version": 5,
+  "coordinate_frame": "arena_ned_floor_center_origin",
+  "controller_frame": "px4_local_ned_persistent_origin",
+  "seed": 9100,
+  "start_ned": [
+    -14.0,
+    0.0,
+    -0.15
+  ],
+  "goal_ned": [
+    14.0,
+    0.0,
+    -2.500000000000002
+  ],
+  "goal_yaw": 0.0,
+  "reference_start_ned": [
+    -14.0,
+    0.0,
+    -2.5
+  ],
+  "obstacle_centers_ned": [
+    [
+      -10.5,
+      0.15,
+      -3.2071
+    ],
+    [
+      -1.0,
+      0.2,
+      -2.7225
+    ],
+    [
+      4.5,
+      -0.1,
+      -1.6533
+    ],
+    [
+      12.0,
+      0.1,
+      -2.0661
+    ]
+  ],
+  "obstacle_radii": [
+    0.4,
+    0.5,
+    0.4,
+    0.4
+  ],
+  "arena_north_m": 34.0,
+  "arena_east_m": 10.0,
+  "arena_height_m": 6.0,
+  "takeoff_altitude_m": 2.5,
+  "controller_origin_ned": [
+    -14.0,
+    0.0,
+    -0.15
+  ],
+  "experiment_config": {
+    "wall_margin_m": 0.45,
+    "obstacle_count": 4,
+    "obstacle_radius_mean_m": 0.35,
+    "obstacle_radius_std_m": 0.0,
+    "obstacle_radius_min_m": 0.35,
+    "obstacle_radius_max_m": 0.35,
+    "obstacle_min_gap_m": 0.3,
+    "stress_case": "infeasible_slalom"
+  },
+  "stress_metadata": {
+    "scenario_family": "infeasible_slalom",
+    "formulation": "trajectory",
+    "reference_mode": "fixed_line",
+    "initialization": "reference_tracking_rollout",
+    "planner_enabled": false,
+    "obstacle_count": 10,
+    "physical_obstacle_radius_m": 0.35,
+    "uav_radius_m": 0.35,
+    "safety_margin_m": 0.35,
+    "effective_radius_m": 1.0499999999999998,
+    "centerline_offset_m": 0.3989999999999999,
+    "offset_ratio": 0.38,
+    "nominal_centerline_penetration_m": 0.6509999999999999,
+    "navigation_start_ned": [
+      -14.0,
+      0.0,
+      -2.5
+    ],
+    "description": "Straight fixed 3-D centerline intersects every effective obstacle shell; alternating East/Down offsets force repeated avoidance and return-to-centerline behaviour."
+  },
+  "typed_obstacles": [
+    [
+      0.0,
+      -10.5,
+      0.15,
+      -3.2071,
+      0.4
+    ],
+    [
+      2.0,
+      -7.0,
+      0.0,
+      -3.5,
+      0.08
+    ],
+    [
+      1.0,
+      -4.0,
+      -0.15,
+      0.0,
+      0.2
+    ],
+    [
+      0.0,
+      -1.0,
+      0.2,
+      -2.7225,
+      0.5
+    ],
+    [
+      1.0,
+      2.0,
+      0.2,
+      0.0,
+      0.2
+    ],
+    [
+      0.0,
+      4.5,
+      -0.1,
+      -1.6533,
+      0.4
+    ],
+    [
+      2.0,
+      7.0,
+      0.0,
+      -1.5,
+      0.08
+    ],
+    [
+      1.0,
+      10.0,
+      0.85,
+      0.0,
+      0.2
+    ],
+    [
+      1.0,
+      10.0,
+      -0.85,
+      0.0,
+      0.2
+    ],
+    [
+      0.0,
+      12.0,
+      0.1,
+      -2.0661,
+      0.4
+    ]
+  ],
+  "challenging_course": true,
+  "guide": {
+    "e_amp": 0.0,
+    "e_freq": 0.0,
+    "e_phase": 0.0,
+    "alt0": 2.5,
+    "alt_amp": 1.0,
+    "alt_freq": 0.224399475256414,
+    "alt_phase": 3.141592653589793
+  }
+}

@@ -1,0 +1,5 @@
+no configuration passed validation
+method: tpe
+objective: solve_ms_mean (relative)
+validation cases: ('cold_headless', 'video_as_cold')
+Best among evaluated finalists under these criteria; not a global optimum or independent scenario validation.

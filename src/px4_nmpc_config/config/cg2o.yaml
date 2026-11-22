@@ -1,0 +1,86 @@
+# cg2o backend settings (numerics only; the optimal-control problem itself is defined in nmpc.yaml).
+# Every key can be overridden per run from Python with cfg['cg2o_overrides'] (experiments, tuning).
+
+# Constrained optimizer: ISPD, cg2o's infeasible-start primal-dual interior-point method
+optimizer: ispd
+max_iterations: 40              # flight budget; benchmarks set the same budget for every backend
+
+unconstrained_solver:
+  type: GN                      # the only choice: cg2o rejects Levenberg and Dogleg
+
+linear_solver:
+  # umfpack | umfpack_fast | qdldlt | qdldlt_s7 | qdldlt_s7_ref | qdldlt_nodamp | eigen_lu
+  # qdldlt damps a solve (sigma I on the primal rows, from 1e-6) only when the KKT matrix is singular;
+  # qdldlt_nodamp: without that damping, for comparisons
+  # eigen_ldlt | cholmod_fast | cholmod | csparse  (these four need equality_regularization > 0)
+  # qdldlt: the same KKT step as UMFPACK (own regularisation + refinement + LU fallback), ~4.4x faster on the
+  # slalom OCPs (results/slalom/261028_203618_slalom_study): 14.9 vs 64.3 ms per cold OCP, identical iterations/cost
+  type: qdldlt
+  equality_regularization: 0.0  # sigma on the equality rows of the KKT matrix (0 = exact KKT matrix)
+
+general:
+  verbose: false
+  num_inner_iterations_max: 10
+  alpha_backtracking: -1.0
+  lagrange_multiplier_initial: 0.0
+  epsilon_constraint: 0.0001
+  epsilon_convergence: 0.0001
+  convergence_criterion: 1      # 0 update norm, 1 Newton decrement, 2 gradient norm, 3 relative Newton decrement
+  # cold start: raise the stage slacks of the reference rollout above the largest violation (strictly feasible
+  # start). ISPD does not need it; false = start from the infeasible reference rollout (used in all experiments)
+  feasible_start: false
+  feasible_start_margin: 0.05
+
+# Receding-horizon warm start (between consecutive NMPC solves)
+warm_start:
+  # 0: primal shift only (duals, slacks and barrier parameter start cold)
+  # 1: ISPD final iterate (x, multipliers, slacks, kappa) shifted by cg2o
+  # 2: ISPD middle iterate (Gondzio-style, more central), shifted by cg2o
+  # default 1: on the slalom 7.0 ms mean per OCP (primal shift 13.0, middle iterate 14.3, tuned IPOPT 16.8); the
+  # tuning study (results/tuning/261028_201502_cg2o_warm) found no better setting than these defaults
+  strategy: 1
+  terminal_rollout: true        # roll the replicated tail out with the dynamics after a shift
+  kappa_strategy: 0             # 0 stored kappa * factor, 1 duality gap, 2 constant, 3 relative gap
+  kappa_factor: 1.0
+  kappa_value: 1.0
+  kappa_gap: 0.01
+  push: 0.0
+  slack_push: 0.0
+  multiplier_push: 0.0
+  slack_projection: 0
+  centering_lo: 0.0             # re-centre s*lambda*kappa into [lo, hi]; 0 / -1 = off
+  centering_hi: -1.0
+  centering_mode: 0
+  fallback: true                # after a non-converged solve the next one starts cold
+  retry: true                   # a warm solve that breaks down is repeated with cold duals
+  divergence_factor: 10.0
+  reset_tolerance: 0.5          # change detector (new obstacle rows etc.), 0 = off
+  reset_test: 1
+  reset_mode: 2
+  middle_strategy: 3
+  middle_gap: 0.03
+  middle_kappa: 30.0
+  middle_iteration: 3
+
+ispd:
+  step_size_strategy: 0
+  ineq_backtracking_step_min: 1.0
+  aux_backtracking_step_min: 0.7
+  init_kappa_strategy: 1
+  kappa_initial: 0.001
+  update_kappa_strategy: 0
+  kappa_update_factor: 15.0
+  kappa_final: 1500.0
+  tau: 1.4
+  limit_kappa_final: true
+  init_slack_strategy: 0
+  slack_variable_initial: 10.0
+  init_lagrange_strategy: 0
+  lagrange_multiplier_initial: 10.0
+  ineq_prediction_strategy: 0
+  ineq_prediction_step_strategy: 0
+  ineq_prediction_param: 1.0
+  keep_aux_positive_strategy: 0
+  aux_scaling_factor: 0.01
+  aux_correction_value: 0.00001
+

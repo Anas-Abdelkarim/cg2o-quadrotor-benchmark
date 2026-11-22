@@ -1,0 +1,45 @@
+# Numbers of Sec. VII of the paper, as printed (rounded as in the paper).
+# `exact`: do not depend on timing; a replay of the shipped flights reproduces them on any machine, except the values
+#          listed under `build_dependent`.
+# `timing`: measured times; they depend on the machine and on the CPUs used.
+# `build_dependent`: IPOPT's warm-start iterations and feasibility. A freshly built IPOPT/HSL gave 34.4 instead of
+#          35.1 mean iterations and 95.9% instead of 95.5% feasible solves (cg2o and IPOPT cold: identical), since
+#          one different early solve changes the rest of IPOPT's warm-start chain. They are listed, not counted.
+# experiments/paper_results.py --compare checks a results folder against this file.
+
+table_x:          # closed-loop flights with cg2o in PX4 SITL (shipped flights)
+  warm: {goal: 10, flights: 10, time_min_s: 14.0, time_max_s: 15.8, tilt_median_deg: 21, tilt_max_deg: 41,
+         feasible: 1425, problems: 1425}
+  cold: {goal: 10, flights: 10, time_min_s: 14.2, time_max_s: 15.0, tilt_median_deg: 21, tilt_max_deg: 34,
+         feasible: 1407, problems: 1407}
+  timing:
+    warm: {solve_ms_median: 20.2, solve_ms_p95: 60.1}
+    cold: {solve_ms_median: 55.4, solve_ms_p95: 106.0}
+
+table_xi:         # paired comparison on the MPC problems of the 20 flights
+  exact:
+    cold:
+      problems: 1407
+      ipopt: {mean_iterations: 51.1, usable_pct: 88.8}
+      cg2o: {mean_iterations: 17.5, usable_pct: 100.0}
+    warm:
+      problems: 1425
+      ipopt: {mean_iterations: 35.1, usable_pct: 95.5}
+      cg2o: {mean_iterations: 7.7, usable_pct: 100.0}
+    cold_start_infeasible: 2582
+  build_dependent: [warm ipopt mean_iterations, warm ipopt usable_pct]
+  timing:
+    cold:
+      ipopt: {mean_ms: 176.7, median_ms: 167.7, p95_ms: 286.5, max_ms: 540.0, within_period_pct: 14.5}
+      cg2o: {mean_ms: 46.7, median_ms: 41.3, p95_ms: 77.8, max_ms: 271.9, within_period_pct: 98.2}
+    warm:
+      ipopt: {mean_ms: 144.8, median_ms: 112.6, p95_ms: 294.6, max_ms: 560.6, within_period_pct: 39.4}
+      cg2o: {mean_ms: 21.7, median_ms: 17.0, p95_ms: 49.6, max_ms: 214.2, within_period_pct: 99.2}
+
+table_xii:        # sensitivity: [trials, rejected %, median relative time] per group (shipped cold-start study)
+  Barrier update: {lower-bounded (29): [15, 20, 0.89], bounded by kappa_0: [20, 35, 0.90], gap only: [55, 22, 0.78],
+                   fixed factor (nested): [8, 75, 0.96]}
+  Positivity: {scaling (35): [77, 22, 0.80], correction (36): [21, 52, 0.85]}
+  zeta_aux_min: {"< 0.5": [7, 43, 1.14], "[0.5, 0.8)": [37, 27, 0.84], ">= 0.8": [54, 28, 0.79]}
+  kappa_final: {"< 1000": [54, 17, 0.77], "[1000, 3000)": [13, 31, 0.82], ">= 3000": [31, 48, 0.93]}
+  beta: {"< 0.05": [15, 53, 0.91], "[0.05, 0.3)": [25, 28, 0.90], ">= 0.3": [37, 5, 0.80]}

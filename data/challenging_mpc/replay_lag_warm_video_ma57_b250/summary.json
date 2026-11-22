@@ -1,0 +1,34 @@
+{
+  "run": "results/sitl/challenging_lag_warm_v25_video",
+  "problems": 268,
+  "hash_mismatches": 0,
+  "ipopt_options": {
+    "hessian_approximation": "exact",
+    "linear_solver": "ma57",
+    "hsllib": "install/externals/hsl/lib/x86_64-linux-gnu/libcoinhsl.so"
+  },
+  "cg2o": {
+    "usable": 268,
+    "mean_ms": 28.128803626865672,
+    "median_ms": 16.933452,
+    "p95_ms": 71.00768204999997,
+    "max_ms": 182.334914,
+    "hessian_free_median_ms": 16.933452,
+    "hessian_free_p95_ms": 71.00768204999997,
+    "hessian_free_mean_ms": 28.128803626865672,
+    "mean_iterations": 10.365671641791044,
+    "iteration_limit_hits": 0
+  },
+  "ipopt": {
+    "usable": 268,
+    "mean_ms": 184.18202680597017,
+    "median_ms": 138.043811,
+    "p95_ms": 428.4152172999996,
+    "max_ms": 1343.142457,
+    "hessian_free_median_ms": 31.208306000000007,
+    "hessian_free_p95_ms": 92.75138125,
+    "hessian_free_mean_ms": 40.35232641044776,
+    "mean_iterations": 9.238805970149254,
+    "iteration_limit_hits": 0
+  }
+}

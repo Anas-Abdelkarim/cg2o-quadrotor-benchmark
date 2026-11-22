@@ -1,0 +1,63 @@
+{
+ "variant": {
+  "label": "ISPD, warm (final iterate)",
+  "backend": "cg2o",
+  "cg2o": {
+   "optimizer": "ispd",
+   "linear_solver": {
+    "type": "qdldlt"
+   },
+   "warm_start": {
+    "strategy": 1
+   }
+  }
+ },
+ "backend": "cg2o",
+ "prediction_model": "challenging",
+ "challenging_vs_max": 2.5,
+ "challenging_start_offset": "-0.06,-0.856",
+ "challenging_yaw_deg": 19.3,
+ "challenging_cg2o": "results/tuning/20261110_101031_challenging_cg2o_warm/selected_parameters.json",
+ "challenging_cg2o_cold": "results/tuning/20261110_133924_challenging_cg2o_cold/selected_parameters.json",
+ "nonlinear_profile": "matched",
+ "tuned": null,
+ "speed_mps": 2.7,
+ "nonlinear_tracking_margin_m": 0.0,
+ "nonlinear_backtracking_min": 0.03,
+ "nonlinear_recovery_buffer_m": 0.02,
+ "nonlinear_rate_slew_weight": -1.0,
+ "nonlinear_margin_adaptive": true,
+ "cold_every_solve": false,
+ "guidance_mode": "fixed_line",
+ "accel_mps2": 1.8,
+ "decel_mps2": 2.0,
+ "acceleration_feedforward": true,
+ "study_settings": false,
+ "solver_max_wall_time_s": 0.25,
+ "max_iterations": 80,
+ "reseed_position_error_m": 0.15,
+ "reseed_velocity_error_mps": 0.4,
+ "hover_throttle": 0.729,
+ "controller_backend": "cg2o",
+ "controller_cpus": {
+  "213538": [
+   2,
+   3
+  ]
+ },
+ "recording": {
+  "rviz": null,
+  "gazebo": null
+ },
+ "outcome": "goal",
+ "mission_wall_s": 27.51,
+ "time_to_goal_s": 14.599405765533447,
+ "min_physical_clearance_m": 0.2277972893693273,
+ "safety_margin_m": 0.35,
+ "diagnostic_solve_ms_median": 14.145,
+ "diagnostic_solve_ms_p95": 47.336599999999976,
+ "diagnostic_solve_ms_max": 82.511,
+ "diagnostic_iterations_median": 4.0,
+ "final_usable_solves": "252",
+ "final_solves": "256"
+}

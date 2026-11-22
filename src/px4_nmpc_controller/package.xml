@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>px4_nmpc_controller</name>
+  <version>3.5.0</version>
+  <description>ROS 2/PX4 integration node for obstacle-aware NMPC.</description>
+  <maintainer email="research@example.com">Research User</maintainer>
+  <license>BSD-3-Clause</license>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>px4_msgs</exec_depend>
+  <exec_depend>px4_nmpc_core</exec_depend>
+  <exec_depend>px4_nmpc_config</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

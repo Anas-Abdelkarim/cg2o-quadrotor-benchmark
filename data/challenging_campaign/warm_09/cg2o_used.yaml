@@ -1,0 +1,62 @@
+optimizer: ispd
+max_iterations: 80
+unconstrained_solver:
+  type: GN
+linear_solver:
+  type: qdldlt
+  equality_regularization: 0.0
+general:
+  verbose: false
+  num_inner_iterations_max: 10
+  alpha_backtracking: -1.0
+  lagrange_multiplier_initial: 0.0
+  epsilon_constraint: 0.0001
+  epsilon_convergence: 0.0001
+  convergence_criterion: 1
+  feasible_start: false
+  feasible_start_margin: 0.05
+warm_start:
+  strategy: 1
+  terminal_rollout: true
+  kappa_strategy: 0
+  kappa_factor: 1.0
+  kappa_value: 1.0
+  kappa_gap: 0.01
+  push: 0.0
+  slack_push: 0.0
+  multiplier_push: 0.0
+  slack_projection: 0
+  centering_lo: 0.0
+  centering_hi: -1.0
+  centering_mode: 0
+  fallback: true
+  retry: true
+  divergence_factor: 10.0
+  reset_tolerance: 0.5
+  reset_test: 1
+  reset_mode: 2
+  middle_strategy: 3
+  middle_gap: 0.03
+  middle_kappa: 30.0
+  middle_iteration: 3
+ispd:
+  step_size_strategy: 0
+  ineq_backtracking_step_min: 1.0
+  aux_backtracking_step_min: 0.7
+  init_kappa_strategy: 1
+  kappa_initial: 0.001
+  update_kappa_strategy: 0
+  kappa_update_factor: 15.0
+  kappa_final: 1500.0
+  tau: 1.4
+  limit_kappa_final: true
+  init_slack_strategy: 0
+  slack_variable_initial: 10.0
+  init_lagrange_strategy: 0
+  lagrange_multiplier_initial: 10.0
+  ineq_prediction_strategy: 0
+  ineq_prediction_step_strategy: 0
+  ineq_prediction_param: 1.0
+  keep_aux_positive_strategy: 0
+  aux_scaling_factor: 0.01
+  aux_correction_value: 1.0e-05

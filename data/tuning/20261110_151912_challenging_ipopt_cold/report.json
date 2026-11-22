@@ -1,0 +1,16 @@
+{
+  "status": "no configuration passed validation",
+  "selected_trial": null,
+  "objective": {
+    "metric": "solve_ms_mean",
+    "mode": "relative",
+    "direction": "minimize",
+    "penalties": {}
+  },
+  "winner": null,
+  "validation_cases": [
+    "cold_headless",
+    "video_as_cold"
+  ],
+  "limitation": "Best among evaluated finalists under these criteria; not a global optimum or independent scenario validation."
+}

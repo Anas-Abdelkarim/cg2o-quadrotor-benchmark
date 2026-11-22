@@ -1,0 +1,15 @@
+# Replace PROGRAM_PATH with an ABSOLUTE path to external_program.py.
+method: random
+experiment:
+  type: command
+  command: [python3, PROGRAM_PATH, '{request}', '{result}']
+  inputs: [external_program.py]
+  revision: '1'
+parameters:
+  - {key: gain, kind: log, low: 0.01, high: 10, default: 1}
+objective: {metric: loss}
+constraints:
+  - {metric: violation, limit: 0}
+settings:
+  cases: [nominal]
+  jobs: 1

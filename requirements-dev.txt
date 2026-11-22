@@ -1,0 +1,3 @@
+-r requirements-offline.txt
+pytest==8.4.2
+-e ./tools/solver_tuning

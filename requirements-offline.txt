@@ -1,0 +1,5 @@
+# ROS-free simulation, experiments, and plotting. Exact versions used for the paper.
+casadi==3.7.0
+numpy==1.26.4
+PyYAML==6.0.2
+matplotlib==3.10.3

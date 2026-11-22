@@ -1,0 +1,49 @@
+# Earlier slalom study (not part of the paper): ISPD (cg2o) vs IPOPT on the infeasible 3-D slalom, IPOPT and ISPD only.
+#   python3 -m px4_nmpc_compare.slalom_study --study src/px4_nmpc_config/config/experiments/infeasible_slalom/study_paper.yaml \
+#       --jobs 1 --label slalom_paper
+#
+# Same protocol as study.yaml, reduced to the variants reported in the paper:
+#   cold: IPOPT and ISPD from the reference-tracking rollout (it penetrates every obstacle safety region)
+#   warm: IPOPT primal and primal-dual warm start, ISPD warm start from the shifted final iterate (x, s, lambda, kappa),
+#         the fastest ISPD initialization in study.yaml (primal shift and middle iterate are slower)
+# Each warm variant also flies the slalom closed loop; the ISPD flight is the one rendered as video.
+study:
+  name: infeasible_slalom_paper
+  driver: ipopt_warm_primal        # flies the recorded request trace (neutral choice: the baseline solver)
+  reference: ipopt_reference       # cold, tight tolerance: reference cost of every OCP
+  budget: 250                      # the SAME iteration budget for both solvers
+  cold_repeats: 3                  # cold replays: solves per OCP, median time
+  first_ocp_repeats: 20            # the deliberately infeasible first slalom OCP: solves for timing
+  jobs: 1                          # one timed process at a time (laptop CPUs lower the clock when many cores work)
+  t_max_s: 45.0
+  cold: [ipopt, ispd]
+  warm: [ipopt_warm_primal, ipopt_warm_primal_dual, ispd_warm_final]
+  flights: [ipopt_warm_primal, ipopt_warm_primal_dual, ispd_warm_final]
+  video: ispd_warm_final
+
+variants:
+  ipopt:
+    label: IPOPT
+    backend: ipopt_cpp
+    ipopt_cpp: {linear_solver: mumps}
+  ipopt_warm_primal:
+    label: IPOPT, warm (primal)
+    backend: ipopt_cpp
+    ipopt_cpp: {linear_solver: mumps, warm_start: primal}
+  ipopt_warm_primal_dual:
+    label: IPOPT, warm (primal-dual)
+    backend: ipopt_cpp
+    ipopt_cpp: {linear_solver: mumps, warm_start: primal_dual}
+  ipopt_reference:
+    label: IPOPT, tight tolerance (reference)
+    backend: ipopt_cpp
+    params: {solver_tol: 1.0e-8}
+    ipopt_cpp: {linear_solver: mumps, acceptable_tol: 1.0e-8, acceptable_iter: 15}
+  ispd:
+    label: ISPD
+    backend: cg2o
+    cg2o: {optimizer: ispd, linear_solver: {type: qdldlt}, warm_start: {strategy: 0}}
+  ispd_warm_final:
+    label: ISPD, warm (final iterate)
+    backend: cg2o
+    cg2o: {optimizer: ispd, linear_solver: {type: qdldlt}, warm_start: {strategy: 1}}

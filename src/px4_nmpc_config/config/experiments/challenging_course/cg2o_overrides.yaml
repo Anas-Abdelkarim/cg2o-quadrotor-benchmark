@@ -1,0 +1,10 @@
+# cg2o settings for the challenging course, merged over config/cg2o.yaml.
+# The repository default disables inequality backtracking (1.0). With the
+# attitude/thrust model, full steps from the level on-path cold start diverge
+# when the measured state is strongly pitched (|pitch| > 30 deg). Screened on
+# 12 logged course problems (cold): 12/12 converged, 17-41 iterations.
+# IPOPT receives an equal tuning budget before any timing comparison.
+ispd:
+  ineq_backtracking_step_min: 0.03
+  aux_backtracking_step_min: 0.7
+  step_size_strategy: 0

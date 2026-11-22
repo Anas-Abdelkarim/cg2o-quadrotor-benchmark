@@ -1,0 +1,155 @@
+px4_nmpc_controller:
+  ros__parameters:
+    # ------------------------------------------------------------------
+    # Control interface
+    #   trajectory : NMPC plans pos/vel/acc, PX4 position controller tracks
+    #                (default; most robust, PX4 owns thrust/attitude)
+    #   attitude   : NMPC outputs roll/pitch/thrust (VehicleAttitudeSetpoint)
+    #   body_rate  : NMPC outputs body rates/thrust (VehicleRatesSetpoint)
+    # ------------------------------------------------------------------
+    control_interface: trajectory
+    solver_backend: ipopt_casadi   # ipopt_casadi | ipopt_cpp | cg2o (legacy aliases: ipopt | fatrop)
+    solver_allow_fallback: true    # ipopt_cpp/cg2o not built -> log it and fly with ipopt_casadi; false = refuse to start
+    control_dt: 0.10                # NMPC stage length [s]
+    horizon_steps: 25               # 2.5 s look-ahead; conservative Gazebo baseline
+    max_obstacles: 8                # nearest obstacles passed to the OCP each solve
+    solver_max_iter: 150             # rarely reached; warm-started solves need ~5-15
+    solver_tol: 1.0e-4
+    solver_mu_init: 0.1
+    solver_max_wall_time_s: 0.25    # IPOPT only
+    gap_tolerance: 2.0e-3           # max shooting gap for a solution to be usable
+    gravity: 9.81
+
+    # Real-time behaviour
+    solve_period_s: 0.10            # start a new solve at most every 0.1 s
+    setpoint_stream_hz: 20.0        # ample margin above PX4's >2 Hz offboard requirement
+    diagnostics_hz: 5.0
+    odom_timeout_s: 0.5
+    plan_timeout_s: -1.0            # <0: auto (1.5 s trajectory, 0.5 s attitude/body_rate)
+    max_consecutive_failures: 5     # then PX4 position hold until the NMPC recovers
+    latency_margin_s: 0.01
+    max_latency_compensation_s: 0.30
+    reseed_position_error_m: 0.5    # trajectory: re-seed plan from odometry above this error
+    reseed_velocity_error_mps: 0.8
+    accept_obstacle_slack_m: 0.05   # reject plans that create > 5 cm safety-shell violation
+    offboard_loss_grace_s: 1.5      # PX4 left OFFBOARD (pilot/QGC) this long -> abort; a PX4 failsafe aborts at once
+    disarm_loss_grace_s: 0.5        # sustained disarm during flight aborts quickly
+
+    # Arena (generated scenarios translate the room into PX4-local NED)
+    enforce_arena_bounds: true
+    arena_north_m: 14.0
+    arena_east_m: 10.0
+    arena_height_m: 5.0
+    arena_state_margin_m: 0.40
+    arena_floor_clearance_m: 0.30
+    arena_origin_local_ned: [0.0, 0.0, 0.0]
+
+    # Mission (generated scenarios override goal_ned / obstacles / arena)
+    goal_ned: [5.0, -2.0, -3.0]
+    goal_yaw: 0.0                   # heading at the goal [rad, NED, 0 = north]; .nan = keep the travel heading (yaw_mode: optimized)
+    goal_tolerance: 0.35
+    goal_speed_tolerance: 0.30
+    takeoff_height_m: 1.0           # PX4 position-controlled takeoff before NMPC starts
+    goal_capture_radius_m: 1.0      # dual-mode terminal set: hand over to PX4 position hold (0 = off)
+    goal_capture_speed_mps: 0.4
+    auto_land_at_goal: false
+
+    # Reference / global guidance
+    desired_speed: 1.0              # robust baseline; increase after Gazebo validation
+    reference_accel_max: 0.6
+    reference_decel_max: 0.8
+    guidance_mode: auto              # auto | planner | direct | fixed_line (stress experiments)
+    planner_enabled: true
+    planner_resolution: 0.25
+    planner_margin: 0.05            # A* inflation = r + uav_radius + safety_margin + planner_margin
+    planner_xy_min: [-6.5, -4.5]
+    planner_xy_max: [6.5, 4.5]
+    planner_replan_period_s: 1.0
+    altitude_blend_fraction: 0.5
+    altitude_blend_min_m: 2.0
+
+    # Vehicle limits (soft in the OCP except input bounds)
+    velocity_max: 3.0
+    tilt_max_deg: 30.0
+    thrust_accel_min: 2.0
+    thrust_accel_max: 17.0
+    body_rate_max: [2.5, 2.5, 1.5]
+    jerk_max: [12.0, 12.0, 8.0]
+    acc_up_max: 4.0
+    acc_down_max: 3.0
+    linear_drag: [0.0, 0.0, 0.0]
+    attitude_tau_s: 0.18            # closed-loop PX4 attitude time constant (attitude interface)
+    attitude_gain: 1.0
+
+    # Yaw (trajectory interface).  fixed = PX4 holds goal_yaw (default, unchanged behaviour).
+    # optimized = the NMPC plans the heading with the path: states yaw + yaw rate, input yaw acceleration;
+    # the nose follows the direction of travel and turns to goal_yaw near the goal.  PX4 gets yaw + yawspeed.
+    yaw_mode: fixed                 # fixed | optimized
+    yaw_rate_max: 0.8               # [rad/s] soft limit (PX4 MPC_YAWRAUTO_MAX default is 0.79)
+    yaw_acc_max: 2.0                # [rad/s^2] hard limit
+    w_yaw_travel: 2.0               # weight: nose along the planned direction of travel
+    w_yaw_goal: 3.0                 # weight: nose to goal_yaw near the goal
+    w_yaw_lateral: 1.0              # weight: sideways body-frame velocity^2 (couples heading and path)
+    w_yaw_rate: 0.05
+    w_yaw_acc: 0.05
+    yaw_goal_blend_m: 1.5           # blend from travel heading to goal_yaw within this distance of the goal
+    yaw_min_speed_mps: 0.25         # travel heading is only used above this reference speed
+
+    # Cost weights
+    w_pos: [12.0, 12.0, 16.0]
+    w_vel: [2.0, 2.0, 3.0]
+    w_pos_terminal: [72.0, 72.0, 96.0]
+    w_vel_terminal: [8.0, 8.0, 12.0]
+    w_acc: 0.3
+    w_jerk: 0.02
+    w_tilt: 1.0
+    w_yaw: 2.0
+    w_attitude_input: [2.0, 2.0, 0.05]
+    w_rate_input: [0.05, 0.3, 0.3, 0.3]
+    w_delta_input_first: [0.0]
+    w_slack_obstacle_l1: 2000.0
+    w_slack_obstacle_l2: 4000.0
+    w_slack_arena_l1: 1000.0
+    w_slack_arena_l2: 2000.0
+    w_slack_dynamic_l1: 200.0
+    w_slack_dynamic_l2: 400.0
+    w_terminal_penalty: 4000.0
+
+    # Obstacles (NED). Effective radius = r + uav_radius + safety_margin.
+    uav_radius: 0.35
+    safety_margin: 0.45
+    obstacle_centers_flat: [
+      3.8,  0.0, -3.0,
+      6.4,  1.2, -3.0,
+      8.0, -1.0, -3.0
+    ]
+    obstacle_radii: [0.75, 0.65, 0.60]
+
+    # Thrust mapping + offset-free MPC (attitude / body_rate interfaces only)
+    # gz_x500: mass 2.064 kg, motorConstant 8.54858e-6, ESC 150..1000 rad/s
+    #   -> real hover throttle 0.729 (PX4's MPC_THR_HOVER=0.6 is only an initial guess)
+    hover_throttle: 0.729
+    thrust_model: quadratic_esc     # quadratic_esc | linear
+    esc_omega_min: 150.0
+    esc_omega_max: 1000.0
+    disturbance_observer: true
+    observer_omega: 1.5
+    observer_zeta: 0.9
+
+    # Experiment control. With auto_start=false, use /nmpc/start.
+    experiment_auto_start: false
+    disarm_on_stop: true
+    auto_arm: true
+    offboard_warmup_s: 1.0          # stream setpoints this long before requesting OFFBOARD + ARM
+    arming_timeout_s: 15.0          # not armed + OFFBOARD after this -> abort (pre-arm failure)
+    status_timeout_s: 8.0           # no VehicleStatus at all after the ARM request -> LAND + abort
+    actual_path_sample_period_s: 0.10
+
+    # PX4 uXRCE-DDS topics.  PX4 v1.16+ appends _v<MESSAGE_VERSION> to versioned
+    # messages, e.g. /fmu/out/vehicle_status_v1 and
+    # /fmu/in/vehicle_attitude_setpoint_v1 with PX4 v1.17 (bundled px4_msgs).
+    #   auto  : PX4's own rule (required for PX4 v1.16 / v1.17)
+    #   never : no suffixes (PX4 <= v1.15 with that release's px4_msgs only)
+    px4_topic_prefix: /fmu
+    px4_versioned_topics: auto
+    trajectory_acceleration_feedforward: false

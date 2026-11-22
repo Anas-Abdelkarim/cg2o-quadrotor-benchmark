@@ -1,0 +1,284 @@
+{
+  "custom_strategy": null,
+  "schema": 2,
+  "package_code": "df251430abf5ccab350eb3f52797248a6a67cb2b8272ffa75e9fb01ce1213afc",
+  "python": "3.10.12",
+  "dependencies": {
+    "PyYAML": "6.0.2",
+    "optuna": "4.9.0",
+    "numpy": "1.26.4"
+  },
+  "space": [
+    {
+      "key": "cg2o.warm_start.strategy",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        1,
+        2
+      ],
+      "default": 1,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.kappa_strategy",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "default": 0,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.kappa_factor",
+      "kind": "log",
+      "low": 0.001,
+      "high": 10.0,
+      "choices": [],
+      "default": 1.0,
+      "grid": [],
+      "optional": false,
+      "active_if": {
+        "cg2o.warm_start.kappa_strategy": [
+          0
+        ]
+      },
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.kappa_value",
+      "kind": "log",
+      "low": 0.01,
+      "high": 10000.0,
+      "choices": [],
+      "default": 1.0,
+      "grid": [],
+      "optional": false,
+      "active_if": {
+        "cg2o.warm_start.kappa_strategy": [
+          2
+        ]
+      },
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.kappa_gap",
+      "kind": "log",
+      "low": 0.0001,
+      "high": 1.0,
+      "choices": [],
+      "default": 0.01,
+      "grid": [],
+      "optional": false,
+      "active_if": {
+        "cg2o.warm_start.kappa_strategy": [
+          3
+        ]
+      },
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.push",
+      "kind": "float",
+      "low": 0.0,
+      "high": 0.1,
+      "choices": [],
+      "default": 0.0,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.centering_lo",
+      "kind": "float",
+      "low": 0.0,
+      "high": 0.5,
+      "choices": [],
+      "default": 0.0,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.reset_tolerance",
+      "kind": "float",
+      "low": 0.0,
+      "high": 20.0,
+      "choices": [],
+      "default": 0.5,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.reset_mode",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        0,
+        1,
+        2
+      ],
+      "default": 2,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.warm_start.reset_test",
+      "kind": "cat",
+      "low": null,
+      "high": null,
+      "choices": [
+        0,
+        1,
+        2
+      ],
+      "default": 1,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.ispd.ineq_backtracking_step_min",
+      "kind": "log",
+      "low": 0.005,
+      "high": 1.0,
+      "choices": [],
+      "default": 0.03,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.ispd.aux_backtracking_step_min",
+      "kind": "float",
+      "low": 0.1,
+      "high": 1.0,
+      "choices": [],
+      "default": 0.7,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.ispd.tau",
+      "kind": "float",
+      "low": 1.05,
+      "high": 3.0,
+      "choices": [],
+      "default": 1.4,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    },
+    {
+      "key": "cg2o.ispd.kappa_final",
+      "kind": "log",
+      "low": 100.0,
+      "high": 100000.0,
+      "choices": [],
+      "default": 1500.0,
+      "grid": [],
+      "optional": false,
+      "active_if": {},
+      "doc": ""
+    }
+  ],
+  "relations": [],
+  "experiment": {
+    "adapter": "python",
+    "entrypoint": "px4_nmpc_compare.challenging_tune:evaluate_cg2o",
+    "revision": "1",
+    "source": "0e449560288a2b7bc536bbc06cb7b8412f7a8f453eb58e4c2c53c24bc0094533",
+    "inputs": {}
+  },
+  "baseline": {
+    "cg2o.warm_start.strategy": 1,
+    "cg2o.warm_start.kappa_strategy": 0,
+    "cg2o.warm_start.kappa_factor": 1.0,
+    "cg2o.warm_start.kappa_value": 1.0,
+    "cg2o.warm_start.kappa_gap": 0.01,
+    "cg2o.warm_start.push": 0.0,
+    "cg2o.warm_start.centering_lo": 0.0,
+    "cg2o.warm_start.reset_tolerance": 0.5,
+    "cg2o.warm_start.reset_mode": 2,
+    "cg2o.warm_start.reset_test": 1,
+    "cg2o.ispd.ineq_backtracking_step_min": 0.03,
+    "cg2o.ispd.aux_backtracking_step_min": 0.7,
+    "cg2o.ispd.tau": 1.4,
+    "cg2o.ispd.kappa_final": 1500.0
+  },
+  "objective": {
+    "metric": "solve_ms_mean",
+    "mode": "relative",
+    "direction": "minimize",
+    "penalties": {}
+  },
+  "constraints": [
+    {
+      "metric": "unusable_fraction",
+      "limit": 0.0,
+      "op": "<="
+    },
+    {
+      "metric": "hit_max_fraction",
+      "limit": 0.02,
+      "op": "<="
+    },
+    {
+      "metric": "eq_residual_max",
+      "limit": 0.001,
+      "op": "<="
+    },
+    {
+      "metric": "ineq_violation_max",
+      "limit": 0.001,
+      "op": "<="
+    },
+    {
+      "metric": "cost_excess_rel_median",
+      "limit": 0.02,
+      "op": "<="
+    }
+  ],
+  "settings": {
+    "cases": [
+      "warm_headless"
+    ],
+    "validation_cases": [
+      "warm_video"
+    ],
+    "screening_fidelity": 0,
+    "validation_fidelity": 0,
+    "repeats": 1,
+    "validation_repeats": 1,
+    "validate_top": 4,
+    "jobs": 1,
+    "seed": 14,
+    "cache": true,
+    "strategy_options": null
+  },
+  "method": "tpe"
+}

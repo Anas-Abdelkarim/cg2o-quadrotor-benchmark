@@ -1,0 +1,29 @@
+comparison:
+  seeds: "9100:9101"
+  obstacle_counts: [10]
+  backends: [ipopt_casadi, ipopt_cpp, cg2o]
+  control_interface: trajectory
+  active_constraint_tolerance: 1.0e-3
+
+  obstacle_distribution:
+    radius_mean_m: 0.35
+    radius_std_m: 0.0
+    radius_min_m: 0.35
+    radius_max_m: 0.35
+    min_gap_m: 0.30
+
+  level1_single_solve:
+    enabled: true
+    cold_start_repeats: 10
+
+  level2_offline_closed_loop:
+    enabled: true
+    t_max_s: 45.0
+    latency_scale: 1.0
+    target_schedule: []
+
+  level3_px4_gazebo:
+    enabled: false
+    t_max_s: 45.0
+    video_seed: 9100
+    video_obstacle_count: 10

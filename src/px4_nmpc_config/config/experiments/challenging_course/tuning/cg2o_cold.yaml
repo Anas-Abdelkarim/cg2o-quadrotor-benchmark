@@ -1,0 +1,171 @@
+# cg2o COLD start (every problem from the infeasible guide-line rollout) on the stored PX4 problems.
+# Also the sensitivity study of the new benchmark: the same 20 ISPD options and ranges as the paper's
+# slalom study (ispd_cold.yaml of that study), except kappa_final [100, 20000] and
+# ineq_backtracking_step_min [0.005, 1] (log), which contain the course defaults. 150 trials.
+# Same gates and objective as ipopt_cold.yaml. Defaults = cg2o.yaml + course overrides (baseline).
+method: tpe
+experiment:
+  type: python
+  entrypoint: px4_nmpc_compare.challenging_tune:evaluate_cg2o
+  revision: '1'
+parameters:
+- key: cg2o.ispd.kappa_final
+  kind: log
+  low: 100.0
+  high: 20000.0
+  default: 1500.0
+- key: cg2o.ispd.init_kappa_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  default: 1
+- key: cg2o.ispd.kappa_initial
+  kind: log
+  low: 0.001
+  high: 10.0
+  default: 0.001
+  active_if:
+    cg2o.ispd.init_kappa_strategy:
+    - 0
+- key: cg2o.ispd.update_kappa_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  - 2
+  - 3
+  default: 0
+- key: cg2o.ispd.kappa_update_factor
+  kind: log
+  low: 2.0
+  high: 100.0
+  default: 15.0
+- key: cg2o.ispd.tau
+  kind: float
+  low: 1.05
+  high: 3.0
+  default: 1.4
+  active_if:
+    cg2o.ispd.update_kappa_strategy:
+    - 0
+- key: cg2o.general.num_inner_iterations_max
+  kind: int
+  low: 1
+  high: 10
+  default: 10
+  active_if:
+    cg2o.ispd.update_kappa_strategy:
+    - 3
+- key: cg2o.ispd.step_size_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  - 2
+  - 3
+  default: 0
+- key: cg2o.ispd.ineq_backtracking_step_min
+  kind: log
+  low: 0.005
+  high: 1.0
+  default: 0.03
+- key: cg2o.ispd.aux_backtracking_step_min
+  kind: float
+  low: 0.1
+  high: 1.0
+  default: 0.7
+- key: cg2o.ispd.keep_aux_positive_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  default: 0
+- key: cg2o.ispd.aux_scaling_factor
+  kind: log
+  low: 0.005
+  high: 0.9
+  default: 0.01
+  active_if:
+    cg2o.ispd.keep_aux_positive_strategy:
+    - 0
+- key: cg2o.ispd.aux_correction_value
+  kind: log
+  low: 1.0e-06
+  high: 1.0
+  default: 1.0e-05
+  active_if:
+    cg2o.ispd.keep_aux_positive_strategy:
+    - 1
+- key: cg2o.ispd.init_slack_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  - 2
+  default: 0
+- key: cg2o.ispd.slack_variable_initial
+  kind: log
+  low: 0.01
+  high: 100.0
+  default: 10.0
+- key: cg2o.ispd.init_lagrange_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  default: 0
+- key: cg2o.ispd.lagrange_multiplier_initial
+  kind: log
+  low: 0.01
+  high: 100.0
+  default: 10.0
+- key: cg2o.ispd.ineq_prediction_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  default: 0
+- key: cg2o.ispd.ineq_prediction_step_strategy
+  kind: cat
+  choices:
+  - 0
+  - 1
+  - 2
+  - 3
+  default: 0
+- key: cg2o.ispd.ineq_prediction_param
+  kind: float
+  low: 0.1
+  high: 1.0
+  default: 1.0
+  active_if:
+    cg2o.ispd.ineq_prediction_step_strategy:
+    - 1
+    - 3
+constraints:
+- metric: unusable_fraction
+  limit: 0.0
+- metric: hit_max_fraction
+  limit: 0.02
+- metric: eq_residual_max
+  limit: 0.001
+- metric: ineq_violation_max
+  limit: 0.001
+- metric: cost_excess_rel_median
+  limit: 0.02
+objective:
+  metric: solve_ms_mean
+  mode: relative
+settings:
+  cases:
+  - cold_headless
+  validation_cases:
+  - video_as_cold
+  screening_fidelity: 0
+  validation_fidelity: 0
+  repeats: 1
+  validation_repeats: 1
+  validate_top: 4
+  jobs: 1
+  seed: 21

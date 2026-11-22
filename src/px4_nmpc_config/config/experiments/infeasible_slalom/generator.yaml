@@ -1,0 +1,27 @@
+scenario_generator:
+  type: infeasible_slalom
+  seed: 9100
+  obstacle_count: 10
+
+  # Arena NED / mission geometry. Navigation starts after the vertical takeoff
+  # at 2.5 m altitude; the fixed reference then runs straight North to the goal.
+  arena_north_m: 34.0
+  arena_east_m: 10.0
+  arena_height_m: 6.0
+  start_north_m: -14.0
+  goal_north_m: 14.0
+  start_altitude_m: 0.15
+  navigation_altitude_m: 2.5
+  goal_yaw: 0.0
+
+  # Physical radius = 0.35 m. Effective radius additionally includes the UAV
+  # radius and safety margin from nmpc.yaml: 0.35 + 0.35 + 0.35 = 1.05 m.
+  # Centers are only 0.38*1.05 ~= 0.399 m from the centerline, so the straight
+  # reference penetrates every effective shell by ~0.651 m while keeping a
+  # non-zero obstacle gradient.
+  obstacle_radius_m: 0.35
+  offset_ratio: 0.38
+  first_obstacle_clearance_m: 2.5
+  last_obstacle_clearance_m: 2.5
+  obstacle_min_gap_m: 0.30
+  wall_margin_m: 0.45

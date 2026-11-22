@@ -1,0 +1,18 @@
+{
+  "cg2o.ispd.kappa_final": 183.76378908417033,
+  "cg2o.ispd.init_kappa_strategy": 0,
+  "cg2o.ispd.kappa_initial": 9.463515562226394,
+  "cg2o.ispd.update_kappa_strategy": 2,
+  "cg2o.ispd.kappa_update_factor": 91.16769705361068,
+  "cg2o.ispd.step_size_strategy": 1,
+  "cg2o.ispd.ineq_backtracking_step_min": 0.3561908125096714,
+  "cg2o.ispd.aux_backtracking_step_min": 0.9670205783443668,
+  "cg2o.ispd.keep_aux_positive_strategy": 0,
+  "cg2o.ispd.aux_scaling_factor": 0.49608023537369944,
+  "cg2o.ispd.init_slack_strategy": 1,
+  "cg2o.ispd.slack_variable_initial": 2.139006459168406,
+  "cg2o.ispd.init_lagrange_strategy": 0,
+  "cg2o.ispd.lagrange_multiplier_initial": 3.7086282716230246,
+  "cg2o.ispd.ineq_prediction_strategy": 0,
+  "cg2o.ispd.ineq_prediction_step_strategy": 0
+}

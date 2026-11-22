@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>px4_nmpc_config</name>
+  <version>3.5.0</version>
+  <description>Central configuration files for the PX4 NMPC project.</description>
+  <maintainer email="research@example.com">Research User</maintainer>
+  <license>BSD-3-Clause</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

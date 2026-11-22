@@ -1,0 +1,78 @@
+{
+  "status": "validated",
+  "selected_trial": 83,
+  "objective": {
+    "metric": "solve_ms_mean",
+    "mode": "relative",
+    "direction": "minimize",
+    "penalties": {}
+  },
+  "winner": {
+    "trial_id": 83,
+    "phase": "validation",
+    "values": {
+      "cg2o.warm_start.strategy": 1,
+      "cg2o.warm_start.kappa_strategy": 3,
+      "cg2o.warm_start.kappa_gap": 0.00010005737343182277,
+      "cg2o.warm_start.push": 0.009230744397979062,
+      "cg2o.warm_start.centering_lo": 0.10378156774900099,
+      "cg2o.warm_start.reset_tolerance": 11.776040466694456,
+      "cg2o.warm_start.reset_mode": 2,
+      "cg2o.warm_start.reset_test": 1,
+      "cg2o.ispd.ineq_backtracking_step_min": 0.009465449133481737,
+      "cg2o.ispd.aux_backtracking_step_min": 0.7408977992984,
+      "cg2o.ispd.tau": 1.2853112820353894,
+      "cg2o.ispd.kappa_final": 129.4781213826208
+    },
+    "fidelity": 0,
+    "runs": [
+      {
+        "case": "warm_headless",
+        "case_key": "\"warm_headless\"",
+        "repeat": 0,
+        "seed": 1152832105,
+        "metrics": {
+          "solve_ms_mean": 19.95419717777778,
+          "solve_ms_p95": 45.40483759999997,
+          "iterations_mean": 6.293333333333333,
+          "unusable_fraction": 0.0,
+          "hit_max_fraction": 0.0,
+          "eq_residual_max": 4.2753307689658016e-06,
+          "ineq_violation_max": 0.0,
+          "cost_excess_rel_median": 0.00681884408777168,
+          "cost_excess_rel_p95": 0.03574112742536866
+        },
+        "error": "",
+        "directory": "artifacts/trial-000083/case-000/repeat-000"
+      },
+      {
+        "case": "warm_video",
+        "case_key": "\"warm_video\"",
+        "repeat": 0,
+        "seed": 831299309,
+        "metrics": {
+          "solve_ms_mean": 18.27832070149254,
+          "solve_ms_p95": 37.001268899999985,
+          "iterations_mean": 5.865671641791045,
+          "unusable_fraction": 0.0,
+          "hit_max_fraction": 0.0,
+          "eq_residual_max": 3.4585331321057566e-06,
+          "ineq_violation_max": 0.0,
+          "cost_excess_rel_median": 0.005812248514119741,
+          "cost_excess_rel_p95": 0.03493692599339907
+        },
+        "error": "",
+        "directory": "artifacts/trial-000083/case-001/repeat-000"
+      }
+    ],
+    "score": 0.5619177946531324,
+    "reasons": [],
+    "cached_from": null,
+    "accepted": true
+  },
+  "validation_cases": [
+    "warm_headless",
+    "warm_video"
+  ],
+  "limitation": "Best among evaluated finalists under these criteria; not a global optimum or independent scenario validation."
+}

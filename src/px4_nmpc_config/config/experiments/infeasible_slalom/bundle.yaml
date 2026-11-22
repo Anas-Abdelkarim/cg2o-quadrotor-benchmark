@@ -1,0 +1,18 @@
+experiment_bundle:
+  name: infeasible_slalom_10
+  formulation: trajectory
+  purpose: >-
+    Stress infeasible-start inequality handling and receding-horizon reaction
+    without changing the trajectory OCP itself.
+  files:
+    nmpc: nmpc.yaml
+    comparison: comparison.yaml
+    experiment: experiment.yaml
+    scenario: scenario_10.json
+    generator: generator.yaml
+  initialization:
+    level1: reset cold start before every repeated solve
+    level2: cold start on the first solve, then normal shifted NMPC warm starts
+  reference:
+    mode: fixed_line
+    planner: disabled
