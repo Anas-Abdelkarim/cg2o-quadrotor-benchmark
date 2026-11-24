@@ -5,10 +5,19 @@ the repository root. Steps 1 to 5 take about one hour, mostly for building IPOPT
 
 | You want | Steps | Needs |
 | --- | --- | --- |
-| The paper's tables and figures from the shipped measurements | 1, 2, 6a | Python only, seconds |
-| The paired comparison re-solved on your machine (Table XI, Fig. 11) | 1 to 5, 6b | solvers and HSL, about 30 min |
-| The tuning studies (Tables IX, XII) | 1 to 5, 6c | solvers and HSL, many hours |
-| Everything from scratch with PX4 flights (Table X, Fig. 10, video) | 1 to 5, 6d | ROS 2 Humble, PX4 SITL, Gazebo; see [INSTALL.md](INSTALL.md) |
+| The paper's tables and figures from the shipped measurements | 0, 1, 2, 6a | Python only, seconds |
+| The paired comparison re-solved on your machine (Table XI, Fig. 11) | 0 to 5, 6b | solvers (HSL optional), about 30 min |
+| The tuning studies (Tables IX, XII) | 0 to 5, 6c | solvers and HSL, many hours |
+| A flight video (warm or cold start) | 0 to 5 with PX4, 6e | ROS 2 Humble, PX4 SITL, Gazebo, a display; minutes |
+| Everything from scratch with PX4 flights (Table X, Fig. 10, video) | 0 to 5 with PX4, 6d | ROS 2 Humble, PX4 SITL, Gazebo |
+
+## 0. Get the repository
+
+Download the repository (with `git clone <repository URL>`, or as a zip archive and unpack it), then change into it:
+
+```bash
+cd cg2o-quadrotor-benchmark       # the folder of the repository; all commands below run from here
+```
 
 ## 1. System packages
 
@@ -18,6 +27,16 @@ sudo apt install -y git curl unzip cmake ninja-build build-essential gfortran pk
   python3-pip python3-venv python3-dev \
   libeigen3-dev libspdlog-dev libfmt-dev libsuitesparse-dev libmetis-dev libomp-dev \
   liblapack-dev libblas-dev libhwloc-dev
+```
+
+**For the PX4 flights and the video** add ROS 2 Humble: set up its apt repository following
+<https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html>, then
+
+```bash
+sudo apt install -y ros-humble-desktop ros-humble-fastcdr ros-humble-fastrtps \
+  python3-colcon-common-extensions python3-rosdep ffmpeg \
+  libfuse2 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-cursor0 \
+  gstreamer1.0-plugins-bad gstreamer1.0-libav gstreamer1.0-gl
 ```
 
 The paper used Intel oneAPI MKL 2024.0 as BLAS/LAPACK of IPOPT and HSL (found automatically in
@@ -32,20 +51,47 @@ venv/bin/pip install pip==26.2.2 setuptools==79.0.1
 venv/bin/pip install -r requirements.txt
 ```
 
-`--system-site-packages` keeps the ROS 2 Python modules visible for the PX4 flights. The pip of Ubuntu 22.04
+**Activate the environment** in every new terminal before running the commands below:
+
+```bash
+source venv/bin/activate          # python3 is now the one of venv/
+source scripts/setup_env.sh       # library paths of the solvers (and ROS 2 if installed); add --no-ros without ROS 2
+```
+
+`deactivate` leaves the environment. `--system-site-packages` keeps the ROS 2 Python modules visible for the PX4 flights. The pip of Ubuntu 22.04
 (22.0) cannot install the tuning package in editable mode, hence the upgrade. The requirements pin the versions
 used for the paper.
 
 ## 3. Third-party solvers
 
-HSL (MA27, MA57) is licensed separately and free for academic use: request "Coin-HSL" at
-<https://licences.stfc.ac.uk/product/coin-hsl>. The paper used `coinhsl-2024.05.15`.
+IPOPT used the HSL linear solvers MA57 and MA27 in the paper. HSL is licensed separately and free for academic use:
+request "Coin-HSL" at <https://licences.stfc.ac.uk/product/coin-hsl>. The paper used `coinhsl-2024.05.15`.
+Choose one of the two builds:
+
+**With HSL** (as in the paper; needed for the tuning studies and for IPOPT numbers comparable to the paper):
 
 ```bash
 HSL_SOURCE=/path/to/coinhsl-2024.05.15.tar.gz MARCH_NATIVE=ON ./scripts/build_externals.sh --solver-only
 ```
 
-This builds, under `install/externals/`: IPOPT 3.14.21 (with MUMPS and SPRAL), HSL, g2o and cg2o, each at the
+**Without HSL** (no licence; IPOPT then uses MUMPS, cg2o is unaffected):
+
+```bash
+MARCH_NATIVE=ON ./scripts/build_externals.sh --solver-only
+```
+
+The script prints a NOTE that HSL is not built and continues. Run the replay with `--no-hsl` (step 6b). HSL can be
+added later without rebuilding the rest: `HSL_SOURCE=/path/to/coinhsl-2024.05.15.tar.gz ./scripts/build_externals.sh --only=hsl`.
+
+**For the PX4 flights and the video**, also build PX4 v1.17 (SITL with Gazebo) and the Micro XRCE-DDS agent:
+
+```bash
+./scripts/build_externals.sh --only=px4,xrce
+```
+
+This runs PX4's own installer for Gazebo and its toolchain (it asks for `sudo`); log out and in once afterwards.
+
+Either solver command builds, under `install/externals/`: IPOPT 3.14.21 (with MUMPS and SPRAL), HSL (if given), g2o and cg2o, each at the
 exact version used for the paper (see [INSTALL.md](INSTALL.md#versions)). cg2o is downloaded from the link given in
 the paper and checked against a hash of its source. `MARCH_NATIVE=ON` compiles g2o and cg2o with
 `-march=native`, as for the paper; the benchmark extension (step 4) is always compiled that way and must match.
@@ -56,17 +102,20 @@ the paper and checked against a hash of its source. `MARCH_NATIVE=ON` compiles g
 ./scripts/build_benchmark.sh            # add --no-ros without ROS 2
 ```
 
+The same command with and without HSL: IPOPT loads HSL at run time, so the benchmark is not rebuilt when HSL is
+added later.
+
 Builds the solver backends, the benchmark extension `build/challenging_mpc/_challenging*.so` (the MPC problem,
-solved by cg2o and by IPOPT) and, if ROS 2 Humble is installed, the ROS 2 workspace.
+solved by cg2o and by IPOPT) and, if ROS 2 Humble is installed, the ROS 2 workspace (needed for the flights and
+the video). After this build, open a new terminal or run the two `source` lines of step 2 again.
 
 ## 5. Tests
 
 ```bash
-source scripts/setup_env.sh
 make test
 ```
 
-Five test suites run, each in its own process; all must pass (199 tests).
+Six test suites run, each in its own process; all must pass (204 tests). The tests do not need HSL.
 
 ## 6. Reproduce the results
 
@@ -120,6 +169,18 @@ python3 experiments/run_experiment.py full
 
 Tuning flights, tuning, 20 flights, paired replay and video. The step-by-step version with `make` targets is in
 [docs/3_reproduce.md](docs/3_reproduce.md).
+
+**e. A flight video** (needs PX4 and a visible display; turn desktop notifications off for the recording):
+
+```bash
+benchmark/flight/record_video.sh results/videos warm 0.126,-0.716 8.3
+benchmark/flight/record_video.sh results/videos cold 0.126,-0.716 8.3
+```
+
+Each command flies the course once with cg2o and the paper's tuned settings (`data/tuning`), from the take-off
+point of the videos in [`videos/`](videos/README.md), and writes RViz and Gazebo side by side to
+`results/videos/video_<warm|cold>/slalom_sitl.mp4`. Without the last two arguments the flight starts at the
+origin. Problems with the flights: [docs/5_troubleshooting.md](docs/5_troubleshooting.md).
 
 **Tables and figures of an existing folder** (any of the above, or with other inputs):
 

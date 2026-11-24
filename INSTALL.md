@@ -143,7 +143,7 @@ After changing C++ code, run the script again. To work on cg2o itself:
 
 ```bash
 source scripts/setup_env.sh
-make test                                   # five suites, one process each; no ROS needed
+make test                                   # six suites, one process each; no ROS needed
 python3 scripts/smoke_test_backends.py      # one real solve with each backend
 ```
 
